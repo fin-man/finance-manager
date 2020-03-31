@@ -1,29 +1,47 @@
 package main
 
 import (
-	"finance-manager/csvprocessors"
-	"finance-manager/filemanager"
-	"os"
+	"finance-manager/categories"
+	"fmt"
 )
 
 func main() {
 
-	fm := filemanager.FileManager{}
-	file, err := fm.OpenFile("chase.csv", os.O_RDWR|os.O_CREATE, os.ModePerm)
+	// fm := filemanager.FileManager{}
+	// file, err := fm.OpenFile("chase.csv", os.O_RDWR|os.O_CREATE, os.ModePerm)
 
-	if err != nil {
-		panic(err)
-	}
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	records := []*csvprocessors.ChaseTransaction{}
+	// records := []*transactionstypes.ChaseTransaction{}
 
-	chaseclient := csvprocessors.NewChaseClient()
+	// chaseclient := csvprocessors.NewChaseClient()
 
-	err = chaseclient.Unmarshal(file, &records)
+	// err = chaseclient.Unmarshal(file, &records)
 
-	if err != nil {
-		panic(err)
-	}
-	chaseclient.PrintRecords(records)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// chaseclient.PrintRecords(records, true)
 
+	// fm := filemanager.FileManager{}
+	// file, err := fm.OpenFile("capitalone.csv", os.O_RDWR|os.O_CREATE, os.ModePerm)
+
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// records := []*transactionstypes.CapitalOneTransaction{}
+
+	// capitalOneClient := csvprocessors.NewCapitalOneClient()
+
+	// err = capitalOneClient.Unmarshal(file, &records)
+
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// capitalOneClient.PrintRecords(records, true)
+
+	fmt.Println(categories.CapitalOneTransactionTypes)
 }

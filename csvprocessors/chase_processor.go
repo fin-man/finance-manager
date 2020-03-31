@@ -1,6 +1,7 @@
 package csvprocessors
 
 import (
+	"finance-manager/transactionstypes"
 	"fmt"
 	"os"
 
@@ -13,17 +14,27 @@ func NewChaseClient() *Chase {
 	return &Chase{}
 }
 
-func (c *Chase) PrintRecords(records []*ChaseTransaction) {
-	for _, record := range records {
+func (c *Chase) PrintRecords(records []*transactionstypes.ChaseTransaction, printCategories bool) {
+	if printCategories {
+		categories := make(map[string]bool)
 
+		for _, record := range records {
+			if record.Category != "" {
+				categories[record.Category] = true
+			}
+		}
+
+		for cat, _ := range categories {
+			fmt.Println(cat)
+		}
+		return // skip this
+	}
+
+	for _, record := range records {
 		fmt.Println(record)
 	}
 }
 
-func (c *Chase) Unmarshal(file *os.File, records *[]*ChaseTransaction) error {
+func (c *Chase) Unmarshal(file *os.File, records *[]*transactionstypes.ChaseTransaction) error {
 	return gocsv.UnmarshalFile(file, records)
-}
-
-func (c *Chase) ExtractCategories(records []*ChaseTransaction) {
-
 }
