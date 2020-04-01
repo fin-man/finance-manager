@@ -9,7 +9,7 @@ type ChaseTransaction struct {
 	Amount          string `csv:"Amount"`
 }
 
-func (c *ChaseTransaction) ToString() string {
+func (c *ChaseTransaction) String() string {
 
 	return ""
 }

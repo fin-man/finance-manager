@@ -15,6 +15,10 @@ import (
 
 type CapitalOne struct{}
 
+var (
+	CapitalOneTimeStampLayout string = "2006-01-02"
+)
+
 func NewCapitalOneClient() *CapitalOne {
 	return &CapitalOne{}
 }
@@ -39,7 +43,12 @@ func (c *CapitalOne) ProcessCSV(records []*transactionstypes.CapitalOneTransacti
 			continue //skip the record
 		}
 
-		pickedCategory := categories.CapitalOneTransactionTypes[record.Category]
+		pickedCategory, ok := categories.CapitalOneTransactionTypes[record.Category]
+
+		if !ok {
+			log.Printf("UnRecognized category in CapitalOne record : %s \n", record.String())
+			continue
+		}
 
 		normalizedRecord := categories.NormalizedTransaction{
 			TransactionDate: formatedTime,
@@ -57,7 +66,7 @@ func (c *CapitalOne) ProcessCSV(records []*transactionstypes.CapitalOneTransacti
 }
 
 func (c *CapitalOne) ConverTime(csvTimeStamp string) (string, error) {
-	t, err := time.Parse(utils.TimeLayout, csvTimeStamp)
+	t, err := time.Parse(CapitalOneTimeStampLayout, csvTimeStamp)
 
 	if err != nil {
 		return "", err
