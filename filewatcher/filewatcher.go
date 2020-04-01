@@ -1,6 +1,7 @@
 package filewatcher
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/fsnotify/fsnotify"
@@ -22,7 +23,7 @@ func NewFileWatcher() *FileWatcher {
 
 func (f *FileWatcher) Watch(directory string) {
 	log.Println("Starting the watch .. ")
-
+	fmt.Println("watching : ", directory+"/test/foo")
 	done := make(chan bool)
 	go func() {
 		for {
@@ -32,7 +33,7 @@ func (f *FileWatcher) Watch(directory string) {
 					return
 				}
 				log.Println("event:", event)
-				if event.Op&fsnotify.Write == fsnotify.Write {
+				if event.Op&fsnotify.Create == fsnotify.Create {
 					log.Println("modified file:", event.Name)
 				}
 			case err, ok := <-f.Watcher.Errors:
@@ -44,7 +45,7 @@ func (f *FileWatcher) Watch(directory string) {
 		}
 	}()
 
-	err := f.Watcher.Add("/test/foo")
+	err := f.Watcher.Add(directory + "/test/foo")
 	if err != nil {
 		log.Fatal(err)
 	}
