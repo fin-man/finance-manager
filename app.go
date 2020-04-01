@@ -1,42 +1,39 @@
 package main
 
-import (
-	"encoding/json"
-	"finance-manager/csvprocessors"
-	"finance-manager/filemanager"
-	"finance-manager/transactionstypes"
-	"log"
-	"os"
-)
+import "finance-manager/filewatcher"
 
 func main() {
 
-	fm := filemanager.FileManager{}
-	file, err := fm.OpenFile("chase.csv", os.O_RDWR|os.O_CREATE, os.ModePerm)
+	watcher := filewatcher.NewFileWatcher()
 
-	if err != nil {
-		panic(err)
-	}
+	watcher.Watch("")
 
-	records := []*transactionstypes.ChaseTransaction{}
+	// fm := filemanager.FileManager{}
+	// file, err := fm.OpenFile("chase.csv", os.O_RDWR|os.O_CREATE, os.ModePerm)
 
-	chaseclient := csvprocessors.NewChaseClient()
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	err = chaseclient.Unmarshal(file, &records)
+	// records := []*transactionstypes.ChaseTransaction{}
 
-	if err != nil {
-		panic(err)
-	}
+	// chaseclient := csvprocessors.NewChaseClient()
 
-	datas := chaseclient.ProcessCSV(records)
+	// err = chaseclient.Unmarshal(file, &records)
 
-	bytes, err := json.Marshal(&datas)
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	if err != nil {
-		log.Fatal(err)
-	}
+	// datas := chaseclient.ProcessCSV(records)
 
-	fm.SaveFile("dataChase.json", "", bytes)
+	// bytes, err := json.Marshal(&datas)
+
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// fm.SaveFile("dataChase.json", "", bytes)
 
 	////---------
 
