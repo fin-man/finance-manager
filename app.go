@@ -1,24 +1,26 @@
 package main
 
 import (
-	"finance-manager/filewatcher"
+	"finance-manager/elasticsearch"
 	"fmt"
-	"log"
-	"os"
 )
 
 func main() {
 
-	watcher := filewatcher.NewFileWatcher()
+	esClient := elasticsearch.NewElasticSearchClient()
 
-	pwd, err := os.Getwd()
+	fmt.Println(esClient)
 
-	fmt.Println(pwd)
-	if err != nil {
-		log.Fatal(err)
-	}
+	// watcher := filewatcher.NewFileWatcher()
 
-	watcher.Watch(pwd + "/data/transactions")
+	// pwd, err := os.Getwd()
+
+	// fmt.Println(pwd)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// watcher.Watch(pwd + "/data/transactions")
 
 	// fm := filemanager.FileManager{}
 	// file, err := fm.OpenFile("chase.csv", os.O_RDWR|os.O_CREATE, os.ModePerm)
