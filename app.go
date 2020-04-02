@@ -18,7 +18,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	watcher.Watch(pwd)
+	watcher.Watch(pwd + "/data/transactions")
 
 	// fm := filemanager.FileManager{}
 	// file, err := fm.OpenFile("chase.csv", os.O_RDWR|os.O_CREATE, os.ModePerm)

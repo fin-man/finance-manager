@@ -21,9 +21,9 @@ func NewFileWatcher() *FileWatcher {
 	}
 }
 
-func (f *FileWatcher) Watch(directory string) {
+func (f *FileWatcher) Watch(volume string) {
 	log.Println("Starting the watch .. ")
-	fmt.Println("watching : ", directory+"/test/foo")
+	fmt.Println("watching : ", volume)
 	done := make(chan bool)
 	go func() {
 		for {
@@ -45,7 +45,7 @@ func (f *FileWatcher) Watch(directory string) {
 		}
 	}()
 
-	err := f.Watcher.Add(directory + "/test/foo")
+	err := f.Watcher.Add(volume)
 	if err != nil {
 		log.Fatal(err)
 	}
