@@ -32,9 +32,8 @@ func (f *FileWatcher) Watch(volume string) {
 				if !ok {
 					return
 				}
-				log.Println("event:", event)
 				if event.Op&fsnotify.Create == fsnotify.Create {
-					log.Println("modified file:", event.Name)
+					log.Println("created file:", event.Name)
 				}
 			case err, ok := <-f.Watcher.Errors:
 				if !ok {
