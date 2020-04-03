@@ -13,6 +13,11 @@ func NewTransactionService() *TransactionService {
 	}
 }
 
-func (t *TransactionService) CreateTransaction() {
-	t.TransactionModel.CreateTransaction()
+func (t *TransactionService) CreateTransaction(data []byte) error {
+
+	return t.TransactionModel.CreateTransaction(data)
+}
+
+func (t *TransactionService) GetAllTransactions() {
+	t.TransactionModel.GetAllTransactions()
 }
