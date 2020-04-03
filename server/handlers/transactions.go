@@ -51,5 +51,12 @@ func (t *TransactionHandler) CreateTransaction(w http.ResponseWriter, r *http.Re
 }
 
 func (t *TransactionHandler) GetAllTransactions(w http.ResponseWriter, r *http.Request) {
-	t.TransactionService.GetAllTransactions()
+	tr := t.TransactionService.GetAllTransactions()
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	if err := json.NewEncoder(w).Encode(tr); err != nil {
+		panic(err)
+	}
 }

@@ -4,14 +4,41 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"finance-manager/categories"
 	"finance-manager/elasticsearch"
-	"fmt"
 	"log"
 	"strings"
 )
 
 type ElasticSearchModel struct {
 	ElasticClient *elasticsearch.ElasticSearchClient
+}
+
+type TransactionResponse struct {
+	Took     int  `json:"took"`
+	TimedOut bool `json:"timed_out"`
+	Shards   struct {
+		Total      int `json:"total"`
+		Successful int `json:"successful"`
+		Skipped    int `json:"skipped"`
+		Failed     int `json:"failed"`
+	} `json:"_shards"`
+	Hits struct {
+		Total struct {
+			Value    int    `json:"value"`
+			Relation string `json:"relation"`
+		} `json:"total"`
+		MaxScore float64 `json:"max_score"`
+		Hits     []Hit   `json:"hits"`
+	} `json:"hits"`
+}
+
+type Hit struct {
+	Index  string                           `json:"_index"`
+	Type   string                           `json:"_type"`
+	ID     string                           `json:"_id"`
+	Score  float64                          `json:"_score"`
+	Source categories.NormalizedTransaction `json:"_source,omitempty"`
 }
 
 func NewElasticSearchModel() *ElasticSearchModel {
@@ -23,23 +50,7 @@ func NewElasticSearchModel() *ElasticSearchModel {
 
 }
 
-func (e *ElasticSearchModel) GetAllTransactions() {
-
-	// ctx := context.Background()
-	// res, err := e.ElasticClient.Client.Search(
-	// 	e.ElasticClient.Client.Search.WithContext(ctx),
-	// 	e.ElasticClient.Client.withInd
-	// )
-
-	// var buf bytes.Buffer
-	// query := map[string]interface{}{
-	// 	"query": map[string]interface{}{
-	// 		"match": map[string]interface{}{
-	// 			"description": "AMZN",
-	// 		},
-	// 	},
-	// }
-
+func (e *ElasticSearchModel) GetAllTransactions() *TransactionResponse {
 	var buf bytes.Buffer
 	query := map[string]interface{}{
 		"from": 0,
@@ -66,7 +77,19 @@ func (e *ElasticSearchModel) GetAllTransactions() {
 		log.Printf("ERROR : %v \n", err)
 	}
 
-	fmt.Printf("RESPONSE : %v \n ", res)
+	readBuf := new(bytes.Buffer)
+
+	readBuf.ReadFrom(res.Body)
+
+	var tr TransactionResponse
+
+	err = json.Unmarshal(readBuf.Bytes(), &tr)
+
+	if err != nil {
+		log.Println("ERROR : %v \n", err)
+	}
+
+	return &tr
 }
 
 func (e *ElasticSearchModel) CreateTransaction(data []byte) error {

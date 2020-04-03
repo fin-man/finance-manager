@@ -18,6 +18,6 @@ func (t *TransactionService) CreateTransaction(data []byte) error {
 	return t.TransactionModel.CreateTransaction(data)
 }
 
-func (t *TransactionService) GetAllTransactions() {
-	t.TransactionModel.GetAllTransactions()
+func (t *TransactionService) GetAllTransactions() *models.TransactionResponse {
+	return t.TransactionModel.GetAllTransactions()
 }
