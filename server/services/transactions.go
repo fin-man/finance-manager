@@ -18,10 +18,10 @@ func (t *TransactionService) CreateTransaction(data []byte) error {
 	return t.TransactionModel.CreateTransaction(data)
 }
 
-func (t *TransactionService) GetAllTransactions() *models.TransactionResponse {
+func (t *TransactionService) GetAllTransactions() (*models.TransactionResponse, error) {
 	return t.TransactionModel.GetAllTransactions()
 }
 
-func (t *TransactionService) GetTransactionsInDateRange(from string, to string) *models.TransactionResponse {
+func (t *TransactionService) GetTransactionsInDateRange(from string, to string) (*models.TransactionResponse, error) {
 	return t.TransactionModel.GetTransactionsInDateRange(from, to)
 }

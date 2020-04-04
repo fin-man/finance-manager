@@ -51,8 +51,10 @@ func NewElasticSearchModel() *ElasticSearchModel {
 
 }
 
-func (e *ElasticSearchModel) GetAllTransactions() *TransactionResponse {
+func (e *ElasticSearchModel) GetAllTransactions() (*TransactionResponse, error) {
 	var buf bytes.Buffer
+	var tr TransactionResponse
+
 	query := map[string]interface{}{
 		"from": 0,
 		"size": 10000,
@@ -63,7 +65,7 @@ func (e *ElasticSearchModel) GetAllTransactions() *TransactionResponse {
 	}
 
 	if err := json.NewEncoder(&buf).Encode(query); err != nil {
-		log.Fatalf("Error encoding query: %s", err)
+		return &tr, err
 	}
 
 	// Perform the search request.
@@ -76,26 +78,26 @@ func (e *ElasticSearchModel) GetAllTransactions() *TransactionResponse {
 	)
 
 	if err != nil {
-		log.Printf("ERROR : %v \n", err)
+		return &tr, err
 	}
 
 	readBuf := new(bytes.Buffer)
 
 	readBuf.ReadFrom(res.Body)
 
-	var tr TransactionResponse
-
 	err = json.Unmarshal(readBuf.Bytes(), &tr)
 
 	if err != nil {
-		log.Println("ERROR : %v \n", err)
+		return &tr, err
 	}
 
-	return &tr
+	return &tr, err
 }
 
-func (e *ElasticSearchModel) GetTransactionsInDateRange(from string, to string) *TransactionResponse {
+func (e *ElasticSearchModel) GetTransactionsInDateRange(from string, to string) (*TransactionResponse, error) {
 	var buf bytes.Buffer
+	var tr TransactionResponse
+
 	query := map[string]interface{}{
 		"from": 0,
 		"size": 10000,
@@ -105,7 +107,7 @@ func (e *ElasticSearchModel) GetTransactionsInDateRange(from string, to string) 
 	}
 
 	if err := json.NewEncoder(&buf).Encode(query); err != nil {
-		log.Fatalf("Error encoding query: %s", err)
+		return &tr, err
 	}
 
 	fmt.Println(buf.String())
@@ -119,14 +121,13 @@ func (e *ElasticSearchModel) GetTransactionsInDateRange(from string, to string) 
 	)
 
 	if err != nil {
-		log.Printf("ERROR : %v \n", err)
+		return &tr, err
+
 	}
 
 	readBuf := new(bytes.Buffer)
 
 	readBuf.ReadFrom(res.Body)
-
-	var tr TransactionResponse
 
 	err = json.Unmarshal(readBuf.Bytes(), &tr)
 
@@ -134,7 +135,7 @@ func (e *ElasticSearchModel) GetTransactionsInDateRange(from string, to string) 
 		log.Println("ERROR : %v \n", err)
 	}
 
-	return &tr
+	return &tr, err
 }
 
 func (e *ElasticSearchModel) CreateTransaction(data []byte) error {

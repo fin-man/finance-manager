@@ -51,13 +51,22 @@ func (t *TransactionHandler) CreateTransaction(w http.ResponseWriter, r *http.Re
 }
 
 func (t *TransactionHandler) GetAllTransactions(w http.ResponseWriter, r *http.Request) {
-	tr := t.TransactionService.GetAllTransactions()
+	tr, err := t.TransactionService.GetAllTransactions()
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 
 	if err := json.NewEncoder(w).Encode(tr); err != nil {
-		panic(err)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
 	}
 }
 
@@ -67,12 +76,19 @@ func (t *TransactionHandler) GetTransactionsInDateRange(w http.ResponseWriter, r
 	to := r.URL.Query().Get("to")
 
 	fmt.Printf("FROM : %s , TO : %s \n", from, to)
-	tr := t.TransactionService.GetTransactionsInDateRange(from, to)
+	tr, err := t.TransactionService.GetTransactionsInDateRange(from, to)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 
 	if err := json.NewEncoder(w).Encode(tr); err != nil {
-		panic(err)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
 	}
 }
