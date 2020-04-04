@@ -47,6 +47,7 @@ func (c *Chase) ProcessCSV(records []*transactionstypes.ChaseTransaction) []*cat
 
 		if !ok {
 			log.Printf("UnRecognized category in Chase record : %s \n", record.String())
+			log.Println("Category : ", record.Category)
 			continue
 		}
 		normalizedRecord := categories.NormalizedTransaction{
@@ -93,6 +94,7 @@ func (c *Chase) ConverTime(csvTimeStamp string) (string, error) {
 	}
 	return t.Format(utils.TimeLayout), err
 }
+
 func (c *Chase) Unmarshal(file *os.File, records *[]*transactionstypes.ChaseTransaction) error {
 	return gocsv.UnmarshalFile(file, records)
 }

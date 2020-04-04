@@ -1,6 +1,7 @@
 package main
 
 import (
+	"finance-manager/clients/recordcreator"
 	"finance-manager/csvprocessors"
 	"finance-manager/filemanager"
 	"finance-manager/filewatcher/watcher"
@@ -31,10 +32,12 @@ func ProcessFile(data ...interface{}) error {
 	fileName := data[1].(string)
 	filePath := data[0].(string)
 
+	recordCreator := recordcreator.NewRecordCreator()
+
 	if strings.Contains(fileName, "chase") {
 		log.Println("Detected a new Chase file")
 
-		err := HandleChase(filePath)
+		err := HandleChase(filePath, recordCreator)
 
 		if err != nil {
 			log.Println(err)
@@ -45,7 +48,7 @@ func ProcessFile(data ...interface{}) error {
 
 	} else if strings.Contains(fileName, "capital_one") {
 		log.Println("Detected a new Chase file")
-		err := HandleCapitalOne(filePath)
+		err := HandleCapitalOne(filePath, recordCreator)
 
 		if err != nil {
 			log.Println(err)
@@ -61,7 +64,7 @@ func ProcessFile(data ...interface{}) error {
 	return nil
 }
 
-func HandleChase(filePath string) error {
+func HandleChase(filePath string, recordCreator *recordcreator.RecordCreator) error {
 
 	fm := filemanager.FileManager{}
 
@@ -82,13 +85,16 @@ func HandleChase(filePath string) error {
 
 	normalizedRecords := chaseClient.ProcessCSV(records)
 	for _, v := range normalizedRecords {
-		fmt.Printf("ChaseRecord : %v \n", v)
+		err = recordCreator.CreateNewRecord(v)
+		if err != nil {
+			log.Println(err)
+		}
 	}
 
 	return nil
 }
 
-func HandleCapitalOne(filePath string) error {
+func HandleCapitalOne(filePath string, recordCreator *recordcreator.RecordCreator) error {
 	fm := filemanager.FileManager{}
 
 	file, err := fm.OpenFile(filePath, os.O_RDWR|os.O_CREATE, os.ModePerm)
@@ -108,7 +114,10 @@ func HandleCapitalOne(filePath string) error {
 
 	normalizedRecords := capitalOneClient.ProcessCSV(records)
 	for _, v := range normalizedRecords {
-		fmt.Printf("CapitalOneRecord : %v \n", v)
+		err = recordCreator.CreateNewRecord(v)
+		if err != nil {
+			log.Println(err)
+		}
 	}
 
 	return nil

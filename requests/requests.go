@@ -11,6 +11,12 @@ type Requests struct {
 	Client *http.Client
 }
 
+func NewRequestsClient() *Requests {
+	return &Requests{
+		Client: &http.Client{},
+	}
+}
+
 func (r *Requests) NewPOSTRquest(url string, body []byte) error {
 
 	request, err := http.NewRequest("POST", url, strings.NewReader(string(body)))
