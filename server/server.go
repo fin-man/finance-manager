@@ -15,6 +15,7 @@ func main() {
 
 	transactionHandler := handlers.NewTransactionHandler()
 	router.Router.HandleFunc("/transactions", transactionHandler.GetAllTransactions).Methods("GET")
+	router.Router.HandleFunc("/transactions/range", transactionHandler.GetTransactionsInDateRange).Methods("GET")
 	router.Router.HandleFunc("/transactions", transactionHandler.CreateTransaction).Methods("POST")
 
 	port := os.Getenv("SERVER_PORT")

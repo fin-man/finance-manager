@@ -60,3 +60,19 @@ func (t *TransactionHandler) GetAllTransactions(w http.ResponseWriter, r *http.R
 		panic(err)
 	}
 }
+
+func (t *TransactionHandler) GetTransactionsInDateRange(w http.ResponseWriter, r *http.Request) {
+
+	from := r.URL.Query().Get("from")
+	to := r.URL.Query().Get("to")
+
+	fmt.Printf("FROM : %s , TO : %s \n", from, to)
+	tr := t.TransactionService.GetTransactionsInDateRange(from, to)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	if err := json.NewEncoder(w).Encode(tr); err != nil {
+		panic(err)
+	}
+}

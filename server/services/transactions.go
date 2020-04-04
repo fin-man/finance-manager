@@ -21,3 +21,7 @@ func (t *TransactionService) CreateTransaction(data []byte) error {
 func (t *TransactionService) GetAllTransactions() *models.TransactionResponse {
 	return t.TransactionModel.GetAllTransactions()
 }
+
+func (t *TransactionService) GetTransactionsInDateRange(from string, to string) *models.TransactionResponse {
+	return t.TransactionModel.GetTransactionsInDateRange(from, to)
+}
