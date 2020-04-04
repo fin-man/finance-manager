@@ -132,7 +132,7 @@ func (e *ElasticSearchModel) GetTransactionsInDateRange(from string, to string) 
 	err = json.Unmarshal(readBuf.Bytes(), &tr)
 
 	if err != nil {
-		log.Println("ERROR : %v \n", err)
+		return &tr, err
 	}
 
 	return &tr, err
