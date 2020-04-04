@@ -1,7 +1,9 @@
 package watcher
+
 import (
 	"fmt"
 	"log"
+	"strings"
 
 	"github.com/fsnotify/fsnotify"
 )
@@ -20,7 +22,7 @@ func NewFileWatcher() *FileWatcher {
 	}
 }
 
-func (f *FileWatcher) Watch(volume string) {
+func (f *FileWatcher) Watch(volume string, callback func(data ...interface{}) error) {
 	log.Println("Starting the watch .. ")
 	fmt.Println("watching : ", volume)
 	done := make(chan bool)
@@ -33,6 +35,12 @@ func (f *FileWatcher) Watch(volume string) {
 				}
 				if event.Op&fsnotify.Create == fsnotify.Create {
 					log.Println("created file:", event.Name)
+					fileName := f.ExtractFileName(event.Name)
+					filePath := f.ExtractFilePath(event.Name)
+					err := callback(filePath, fileName)
+					if err != nil {
+						log.Printf("ERROR : %v \n", err)
+					}
 				}
 			case err, ok := <-f.Watcher.Errors:
 				if !ok {
@@ -48,4 +56,19 @@ func (f *FileWatcher) Watch(volume string) {
 		log.Fatal(err)
 	}
 	<-done
+}
+
+func (f *FileWatcher) ExtractFileName(event string) string {
+	fileEventSplit := strings.Split(event, " ")
+	filePathSplit := strings.Split(fileEventSplit[len(fileEventSplit)-1], "/")
+	fileName := filePathSplit[len(filePathSplit)-1]
+
+	return fileName
+}
+
+func (f *FileWatcher) ExtractFilePath(event string) string {
+	fileEventSplit := strings.Split(event, " ")
+
+	filePath := fileEventSplit[len(fileEventSplit)-1]
+	return filePath
 }

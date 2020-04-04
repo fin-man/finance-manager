@@ -1,5 +1,7 @@
 
 
+build-all: build build-filewatcher
+
 build:
 	go build -o ./bin/server ./server
 
