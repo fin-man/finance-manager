@@ -70,6 +70,20 @@ func (t *TransactionHandler) GetAllTransactions(w http.ResponseWriter, r *http.R
 	}
 }
 
+func (t *TransactionHandler) GetAllTransactionsGraph(w http.ResponseWriter, r *http.Request) {
+	testData := t.TransactionService.GetAllTransactionsGraph()
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	if err := json.NewEncoder(w).Encode(testData); err != nil {
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+	}
+}
 func (t *TransactionHandler) GetTransactionsInDateRange(w http.ResponseWriter, r *http.Request) {
 
 	from := r.URL.Query().Get("from")

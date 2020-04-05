@@ -17,7 +17,7 @@ func main() {
 	router.Router.HandleFunc("/transactions", transactionHandler.GetAllTransactions).Methods("GET")
 	router.Router.HandleFunc("/transactions/range", transactionHandler.GetTransactionsInDateRange).Methods("GET")
 	router.Router.HandleFunc("/transactions", transactionHandler.CreateTransaction).Methods("POST")
-
+	router.Router.HandleFunc("/transactions/graph", transactionHandler.GetAllTransactionsGraph).Methods("GET")
 	port := os.Getenv("SERVER_PORT")
 	if port == "" {
 		port = "8080"
