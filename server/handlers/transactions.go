@@ -26,6 +26,7 @@ func NewTransactionHandler() *TransactionHandler {
 
 func (t *TransactionHandler) CreateTransaction(w http.ResponseWriter, r *http.Request) {
 	var transaction categories.NormalizedTransaction
+	enableCors(&w)
 
 	err := json.NewDecoder(r.Body).Decode(&transaction)
 	if err != nil {
@@ -57,8 +58,8 @@ func (t *TransactionHandler) GetAllTransactions(w http.ResponseWriter, r *http.R
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	enableCors(&w)
 
-	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 
 	if err := json.NewEncoder(w).Encode(tr); err != nil {
@@ -72,8 +73,8 @@ func (t *TransactionHandler) GetAllTransactions(w http.ResponseWriter, r *http.R
 
 func (t *TransactionHandler) GetAllTransactionsGraph(w http.ResponseWriter, r *http.Request) {
 	testData := t.TransactionService.GetAllTransactionsGraph()
+	enableCors(&w)
 
-	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 
 	if err := json.NewEncoder(w).Encode(testData); err != nil {
@@ -85,6 +86,7 @@ func (t *TransactionHandler) GetAllTransactionsGraph(w http.ResponseWriter, r *h
 	}
 }
 func (t *TransactionHandler) GetTransactionsInDateRange(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 
 	from := r.URL.Query().Get("from")
 	to := r.URL.Query().Get("to")
@@ -105,4 +107,8 @@ func (t *TransactionHandler) GetTransactionsInDateRange(w http.ResponseWriter, r
 			return
 		}
 	}
+}
+
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }

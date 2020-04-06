@@ -5,6 +5,7 @@ import (
 	"finance-manager/server/models"
 	"finance-manager/utils"
 	"log"
+	"sort"
 )
 
 type TransactionService struct {
@@ -96,6 +97,10 @@ func (t *TransactionService) GetAllTransactionsGraph() *GraphFullResponse {
 	}
 
 	var graphResponse GraphResponse
+
+	sort.Slice(allGraphData, func(i, j int) bool {
+		return allGraphData[i][0] < allGraphData[j][0]
+	})
 
 	graphResponse.AllGraph = allGraphData
 
