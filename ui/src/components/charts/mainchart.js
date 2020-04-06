@@ -5,7 +5,6 @@ import HighchartsReact from 'highcharts-react-official';
 
 function MainChart(props) {
 
-    console.log(props.data.data.graph_response.all_graph_data)
     const options = {
         chart: {
           type: 'column',
@@ -27,6 +26,8 @@ function MainChart(props) {
           }
         ]
       };
+
+      console.log(typeof props.startDate)
   return (
     <div >
         Main Chart

@@ -1,17 +1,13 @@
 import React, { useState,useEffect } from 'react';
 import axios from 'axios';
-import MainChart from './charts/mainchart'
+import MainChart from './charts/mainchart';
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+
 function MainPage() {
   const [data , setData] = useState({data: null});
-
-
-//   useEffect( async()=>{
-//       const result = await axios(
-//           'http://localhost:8080/transactions/graph'
-//       );
-
-//       setData(result.Data)
-//   });
+  const [startDate, setStartDate] = useState(new Date());
 
   useEffect(()=> {
 
@@ -30,11 +26,10 @@ function MainPage() {
       console.log("Data is tehre")
     return (
         <div >
-            Main Page
-            <div>
-            {data.data.all_transactions.took}
-            </div>
-            <MainChart data={data} />
+            <DatePicker selected={startDate} onChange={date => setStartDate(date)} dateFormat="yyyy-MM-dd" />
+      
+            
+            <MainChart data={data} startDate={startDate}  />
         </div>
       );
   }else{
