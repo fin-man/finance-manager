@@ -34,7 +34,7 @@ function MainPage() {
             <div>
             {data.data.all_transactions.took}
             </div>
-            <MainChart />
+            <MainChart data={data} />
         </div>
       );
   }else{
