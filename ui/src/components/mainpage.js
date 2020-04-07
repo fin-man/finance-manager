@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import MainChart from './charts/mainchart';
+import CharacterDropDown from './category'
 import CategoriesChart from './charts/categorieschart'
 import FormatDate from './../utils/formatDates'
 import CompareDates from './../utils/compareDates'
@@ -36,6 +37,9 @@ function MainPage(props) {
                 </div>
                 <div>
                     <CategoriesChart data={data.data.graph_response.CategoryMap} />
+                </div>
+                <div>
+                    <CharacterDropDown />
                 </div>
           </div>
          

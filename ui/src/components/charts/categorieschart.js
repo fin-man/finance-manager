@@ -33,8 +33,6 @@ function MassageData(data){
     var pieData = [];
 
     for (var key in data) {
-        console.log(key)
-        console.log(data[key])
 
         let total = 0
         for (var s in data[key]) {

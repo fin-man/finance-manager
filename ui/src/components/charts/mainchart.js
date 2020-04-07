@@ -26,9 +26,6 @@ function MainChart(props) {
         ]
       };
 
-      console.log("Start Date " + props.startDate)
-      console.log("End Date " + props.endDate)
-
   return (
     <div >
         Main Chart
