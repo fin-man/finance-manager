@@ -6,6 +6,8 @@ function HomePage() {
 
     const firstDate = new Date()
     firstDate.setDate(firstDate.getDate() - 30)
+
+    
     const [startDate, setStartDate] = useState(firstDate);
     const [endDate, setEndDate] = useState(new Date());
   
