@@ -19,6 +19,9 @@ func main() {
 	router.Router.HandleFunc("/transactions/range", transactionHandler.GetTransactionsInDateRange).Methods("GET")
 	router.Router.HandleFunc("/transactions", transactionHandler.CreateTransaction).Methods("POST")
 	router.Router.HandleFunc("/transactions/graph", transactionHandler.GetAllTransactionsGraph).Methods("GET")
+
+	categoriesHandler := handlers.NewCategoriesHandler()
+	router.Router.HandleFunc("/categories", categoriesHandler.GetAllCategories).Methods("GET")
 	port := os.Getenv("SERVER_PORT")
 
 	if port == "" {

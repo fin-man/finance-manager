@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
 import PieChart from "highcharts-react-official";
 
 
@@ -19,9 +18,6 @@ function CategoriesChart(props) {
         ]
     };
       
-
-   // console.log(props.data)
-    MassageData(props.data)
     return(
         <div>
              <PieChart highcharts={Highcharts} options={options} />
