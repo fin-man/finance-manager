@@ -39,7 +39,7 @@ function MainPage(props) {
                     <CategoriesChart data={data.data.graph_response.CategoryMap} />
                 </div>
                 <div>
-                    <CharacterDropDown />
+                    <CharacterDropDown data={data.data.graph_response.CategoryMap}/>
                 </div>
           </div>
          

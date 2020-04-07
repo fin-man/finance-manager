@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 
 
-function CharacterDropDown() {
-    const [items, setItems] = React.useState([]);
-    const [pick, setPickItem] = React.useState("");
+function CharacterDropDown(props) {
+    const [items, setItems] = useState([]);
+    const [pick, setPickItem] = useState("");
   
 
     const handleAddrTypeChange = (e) => setPickItem(e.target.value)
 
-    React.useEffect(() => {
+    useEffect(() => {
       async function getCharacters() {
         const response = await axios("http://localhost:8080/categories");
 
@@ -28,38 +30,69 @@ function CharacterDropDown() {
     }, []);
 
     return (
-        <div>
-            <select onChange={e => handleAddrTypeChange(e)}>
-             {items}
-            </select>
-            {pick}
 
+        <div>
+            <div>
+                <select onChange={e => handleAddrTypeChange(e)}>
+                {items}
+                </select>
+
+            </div>
+
+            <div>
+                <CategoriesLineChart data={props.data} pick={pick} />
+            </div>
         </div>
+ 
         
     );
   }
 
 
-
-function CategoriesBody(){
-
-
-
-    return(
-        <div>
-
-        </div>
-    )
-}
-
-function CategoriesChart(){
+function CategoriesLineChart(props){
     
+    console.log(props.pick)
+    console.log(props.data[props.pick])
 
-    return(
-        <div>
 
-        </div>
-    )
+    const options = {
+        chart: {
+          type: 'column',
+          zoomType: 'x'
+
+        },
+        title: {
+          text: 'My chart'
+        },
+        xAxis: {
+            type: 'datetime',
+            labels: {
+              format: '{value:%Y-%b-%e}'
+            },
+          },
+        series: [
+          {
+            data:  props.data[props.pick]
+          }
+        ]
+      };
+
+    if (typeof props.pick !== undefined){
+
+        return(
+            <div >
+            Main Chart
+            <HighchartsReact highcharts={Highcharts} options={options} />
+            </div>    
+        )
+    }else{
+        return(
+            <div>
+                Nope
+            </div>
+        )
+    }
+ 
 }
 
 export default CharacterDropDown;
