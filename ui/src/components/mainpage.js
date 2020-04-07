@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import MainChart from './charts/mainchart';
+import CategoriesChart from './charts/categorieschart'
 import FormatDate from './../utils/formatDates'
 import CompareDates from './../utils/compareDates'
 import "react-datepicker/dist/react-datepicker.css";
@@ -29,9 +30,15 @@ function MainPage(props) {
   
       
       return (
-          <div >
-              <MainChart data={data} startDate={FormatDate(props.startDate)} endDate={FormatDate(props.endDate)}  />
+          <div>
+                <div >
+                <MainChart data={data} startDate={FormatDate(props.startDate)} endDate={FormatDate(props.endDate)}  />
+                </div>
+                <div>
+                    <CategoriesChart data={data.data.graph_response.CategoryMap} />
+                </div>
           </div>
+         
         );
     }else{
         console.log("data still no there")

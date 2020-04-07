@@ -4,7 +4,9 @@ import DatePicker from "react-datepicker";
 import MainPage from './mainpage'
 function HomePage() {
 
-    const [startDate, setStartDate] = useState(new Date());
+    const firstDate = new Date()
+    firstDate.setDate(firstDate.getDate() - 30)
+    const [startDate, setStartDate] = useState(firstDate);
     const [endDate, setEndDate] = useState(new Date());
   
 
