@@ -43,8 +43,8 @@ func (t *TransactionService) GetAllTransactions() (*models.TransactionResponse, 
 	return t.TransactionModel.GetAllTransactions()
 }
 
-func (t *TransactionService) GetAllTransactionsGraph() *GraphFullResponse {
-	transactions, err := t.TransactionModel.GetAllTransactions()
+func (t *TransactionService) GetAllTransactionsGraph(from string, to string) *GraphFullResponse {
+	transactions, err := t.TransactionModel.GetTransactionsInDateRange(from, to)
 	if err != nil {
 		//abort
 	}

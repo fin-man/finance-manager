@@ -72,7 +72,11 @@ func (t *TransactionHandler) GetAllTransactions(w http.ResponseWriter, r *http.R
 }
 
 func (t *TransactionHandler) GetAllTransactionsGraph(w http.ResponseWriter, r *http.Request) {
-	testData := t.TransactionService.GetAllTransactionsGraph()
+
+	from := r.URL.Query().Get("from")
+	to := r.URL.Query().Get("to")
+
+	testData := t.TransactionService.GetAllTransactionsGraph(from, to)
 	enableCors(&w)
 
 	w.WriteHeader(http.StatusOK)

@@ -2,7 +2,6 @@ import React from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
-
 function MainChart(props) {
 
     const options = {
@@ -27,7 +26,9 @@ function MainChart(props) {
         ]
       };
 
-      console.log(typeof props.startDate)
+      console.log("Start Date " + props.startDate)
+      console.log("End Date " + props.endDate)
+
   return (
     <div >
         Main Chart
