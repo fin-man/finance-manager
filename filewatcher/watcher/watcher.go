@@ -37,7 +37,7 @@ func (f *FileWatcher) Watch(volume string, callback func(data ...interface{}) er
 					log.Println("created file:", event.Name)
 					fileName := f.ExtractFileName(event.Name)
 					filePath := f.ExtractFilePath(event.Name)
-					err := callback(filePath, fileName)
+					err := callback(filePath, fileName) // make this get executed in a go routine with a channel
 					if err != nil {
 						log.Printf("ERROR : %v \n", err)
 					}

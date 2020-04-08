@@ -9,3 +9,9 @@ type NormalizedTransaction struct {
 	Category        Category `csv:"category"  json:"category"`
 	AccountType     string   `csv:"account_type" json:"account_type`
 }
+
+func (n *NormalizedTransaction) MakeAmountPositive() {
+	if n.Amount < 0 {
+		n.Amount *= -1
+	}
+}

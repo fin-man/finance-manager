@@ -35,6 +35,8 @@ func (t *TransactionHandler) CreateTransaction(w http.ResponseWriter, r *http.Re
 		return
 	}
 
+	transaction.MakeAmountPositive() //some banks have a mount as negative
+
 	data, err := json.Marshal(transaction)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
