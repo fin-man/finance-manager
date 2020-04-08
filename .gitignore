@@ -8,7 +8,7 @@
 /node_modules
 /.pnp
 .pnp.js
-
+ui/node_modules/.cache
 # testing
 /coverage
 

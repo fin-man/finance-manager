@@ -81,6 +81,8 @@ func (e *ElasticSearchModel) GetAllTransactions() (*TransactionResponse, error) 
 		return &tr, err
 	}
 
+	defer res.Body.Close()
+
 	readBuf := new(bytes.Buffer)
 
 	readBuf.ReadFrom(res.Body)
@@ -124,6 +126,8 @@ func (e *ElasticSearchModel) GetTransactionsInDateRange(from string, to string) 
 		return &tr, err
 
 	}
+
+	defer res.Body.Close()
 
 	readBuf := new(bytes.Buffer)
 

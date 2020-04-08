@@ -34,6 +34,8 @@ func (r *Requests) NewPOSTRquest(url string, body []byte) error {
 		return err
 	}
 
+	defer resp.Body.Close()
+
 	if resp.StatusCode != 200 {
 		return fmt.Errorf("Non Zero status code : %d", resp.StatusCode)
 	}

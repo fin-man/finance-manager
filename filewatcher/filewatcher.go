@@ -74,6 +74,8 @@ func HandleChase(filePath string, recordCreator *recordcreator.RecordCreator) er
 		return err
 	}
 
+	defer file.Close()
+
 	records := []*transactionstypes.ChaseTransaction{}
 	chaseClient := csvprocessors.NewChaseClient()
 
@@ -102,6 +104,8 @@ func HandleCapitalOne(filePath string, recordCreator *recordcreator.RecordCreato
 	if err != nil {
 		return err
 	}
+
+	defer file.Close()
 
 	records := []*transactionstypes.CapitalOneTransaction{}
 	capitalOneClient := csvprocessors.NewCapitalOneClient()
