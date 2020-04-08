@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"finance-manager/categories"
 	"finance-manager/server/services"
+	"finance-manager/utils"
 	"fmt"
 	"net/http"
 )
@@ -40,7 +41,8 @@ func (t *TransactionHandler) CreateTransaction(w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	err = t.TransactionService.CreateTransaction(data)
+	generatedID := t.generateID(transaction.Bank, transaction.Amount, transaction.Category, transaction.TransactionDate, transaction.Description)
+	err = t.TransactionService.CreateTransaction(data, generatedID)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -115,4 +117,8 @@ func (t *TransactionHandler) GetTransactionsInDateRange(w http.ResponseWriter, r
 
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
+func (t *TransactionHandler) generateID(bank categories.Bank, amount float64, category categories.Category, date, description string) string {
+	return utils.EncodeToBase64(fmt.Sprintf("%s-%f-%s-%s-%s", bank, amount, category, date, description))
 }

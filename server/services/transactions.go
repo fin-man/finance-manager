@@ -34,9 +34,9 @@ func NewTransactionService() *TransactionService {
 	}
 }
 
-func (t *TransactionService) CreateTransaction(data []byte) error {
+func (t *TransactionService) CreateTransaction(data []byte, id string) error {
 
-	return t.TransactionModel.CreateTransaction(data)
+	return t.TransactionModel.CreateTransaction(data, id)
 }
 
 func (t *TransactionService) GetAllTransactions() (*models.TransactionResponse, error) {

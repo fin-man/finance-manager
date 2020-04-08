@@ -142,10 +142,11 @@ func (e *ElasticSearchModel) GetTransactionsInDateRange(from string, to string) 
 	return &tr, err
 }
 
-func (e *ElasticSearchModel) CreateTransaction(data []byte) error {
+func (e *ElasticSearchModel) CreateTransaction(data []byte, id string) error {
 	res, err := e.ElasticClient.Client.Index(
 		"transactions",
 		strings.NewReader(string(data)),
+		e.ElasticClient.Client.Index.WithDocumentID(id),
 		e.ElasticClient.Client.Index.WithRefresh("true"),
 	)
 	if err != nil {
