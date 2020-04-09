@@ -54,7 +54,6 @@ func (t *TransactionService) GetAllTransactionsGraph(from string, to string) *Gr
 
 	timeStampTotals := make(map[float64]float64)
 	categoryTimeStamp := make(map[categories.Category]map[float64]float64)
-
 	for _, t := range transactions.Hits.Hits {
 
 		_, okCat := categoryTimeStamp[t.Source.Category]
@@ -103,7 +102,6 @@ func (t *TransactionService) GetAllTransactionsGraph(from string, to string) *Gr
 	graphResponse.AllGraph = allGraphData
 
 	categoryMap := make(map[categories.Category][][]float64)
-
 	for category, dailyValues := range categoryTimeStamp {
 		var tempDateValues [][]float64
 		//categoryMap[category] = tempDateValues
@@ -115,6 +113,10 @@ func (t *TransactionService) GetAllTransactionsGraph(from string, to string) *Gr
 
 			tempDateValues = append(tempDateValues, record)
 		}
+
+		sort.Slice(tempDateValues, func(i, j int) bool {
+			return tempDateValues[i][0] < tempDateValues[j][0]
+		})
 
 		categoryMap[category] = tempDateValues
 	}

@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-
+import DetailedTable from './detailedtable'
 
 function CharacterDropDown(props) {
     const [items, setItems] = useState([]);
@@ -12,45 +12,59 @@ function CharacterDropDown(props) {
     const handleAddrTypeChange = (e) => setPickItem(e.target.value)
 
     useEffect(() => {
-      async function getCharacters() {
-        const response = await axios("http://localhost:8080/categories");
+      var arr = []
 
-        var arr = [];
-
-        for (let i = 1; i <= response.data.length; i++) {
-            if (typeof response.data[i] !== 'undefined') {
-            arr.push(<option className="dropdown-option" key={i} value={response.data[i]} >{response.data[i]} </option>)
-            }
+      function RunThis(){
+        console.log("New data set ---- ")
+        if (typeof props.data !== undefined) {
+            for(var v in props.data){
+              console.log(v)
+             arr.push(<option className="dropdown-option" key={v} value={v} >{v} </option>)
+          }
         }
-        
-        setItems(arr);
+        setItems(arr)
       }
-      getCharacters();
+      RunThis()
+    }, [props.data]);
 
-    }, []);
-
-    return (
-
-      <div>
-        <div className="categories-wrapper">
-            <div className="categories-title">
-              Categories : 
-            </div>
-            <div className="categories-dropdown">
-                <select className="dropdown-select" onChange={e => handleAddrTypeChange(e)}>
-                {items}
-                </select>
-            </div>
-        </div>
+    if (pick === ""){
+      return (
         <div>
-            <div>
-                <CategoriesLineChart data={props.data} pick={pick} />
-            </div>
-        </div>
-        </div>
- 
-        
-    );
+          <div className="categories-wrapper">
+              <div className="categories-title">
+                Categories : 
+              </div>
+              <div className="categories-dropdown">
+                  <select className="dropdown-select" onChange={e => handleAddrTypeChange(e)}>
+                  {items}
+                  </select>
+              </div>
+          </div>
+          </div>
+      );
+    }else{
+      return (
+        <div>
+          <div className="categories-wrapper">
+              <div className="categories-title">
+                Categories : 
+              </div>
+              <div className="categories-dropdown">
+                  <select className="dropdown-select" onChange={e => handleAddrTypeChange(e)}>
+                  {items}
+                  </select>
+              </div>
+          </div>
+          <div>
+              <div>
+                  <CategoriesLineChart data={props.data} pick={pick} />
+                  <DetailedTable data={props.data[pick]}/>
+              </div>
+          </div>
+          </div>
+      );
+    }
+
   }
 
 
@@ -58,9 +72,14 @@ function CategoriesLineChart(props){
     
     const options = {
         chart: {
+          height: 500,
           type: 'column',
           zoomType: 'x'
 
+        },
+
+        title: {
+          text: ''
         },
         xAxis: {
             type: 'datetime',
@@ -78,9 +97,12 @@ function CategoriesLineChart(props){
     if (typeof props.pick !== undefined){
 
         return(
-            <div >
-            <HighchartsReact highcharts={Highcharts} options={options} />
+          <div>
+          <div className="categories-line">
+              <HighchartsReact highcharts={Highcharts} options={options} />
             </div>    
+          </div>
+           
         )
     }else{
         return(

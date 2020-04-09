@@ -16,9 +16,6 @@ function MainChart(props) {
         },
         xAxis: {
             type: 'datetime',
-            title: {
-              title: 'text'
-            },
             labels: {
               format: '{value:%Y-%b-%e}'
             },
