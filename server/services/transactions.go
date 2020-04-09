@@ -18,8 +18,9 @@ type GraphFullResponse struct {
 }
 
 type GraphResponse struct {
-	AllGraph    [][]float64                         `json:"all_graph_data"`
-	CategoryMap map[categories.Category][][]float64 `json"category_graph_data"`
+	AllGraph            [][]float64                                                `json:"all_graph_data"`
+	CategoryMap         map[categories.Category][][]float64                        `json"category_graph_data"`
+	CategoryMapDetailed map[categories.Category][]categories.NormalizedTransaction `json:"category_map_detailed"`
 }
 
 func NewTransactionService() *TransactionService {
@@ -54,12 +55,15 @@ func (t *TransactionService) GetAllTransactionsGraph(from string, to string) *Gr
 
 	timeStampTotals := make(map[float64]float64)
 	categoryTimeStamp := make(map[categories.Category]map[float64]float64)
+	categoryDetailed := make(map[categories.Category][]categories.NormalizedTransaction)
 	for _, t := range transactions.Hits.Hits {
 
 		_, okCat := categoryTimeStamp[t.Source.Category]
 		if !okCat {
 			categoryTimeStamp[t.Source.Category] = make(map[float64]float64)
 		}
+
+		categoryDetailed[t.Source.Category] = append(categoryDetailed[t.Source.Category], t.Source)
 
 		unixMili, err := utils.ConvertTimeToUnixMillis(t.Source.TransactionDate)
 
@@ -121,7 +125,13 @@ func (t *TransactionService) GetAllTransactionsGraph(from string, to string) *Gr
 		categoryMap[category] = tempDateValues
 	}
 
+	for _, detailedData := range categoryDetailed {
+		sort.Slice(detailedData, func(i, j int) bool {
+			return detailedData[i].TransactionDate < detailedData[j].TransactionDate
+		})
+	}
 	graphResponse.CategoryMap = categoryMap
+	graphResponse.CategoryMapDetailed = categoryDetailed
 
 	graphFullResponse.Graph = graphResponse
 

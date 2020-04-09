@@ -3,6 +3,7 @@ import axios from 'axios';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import DetailedTable from './detailedtable'
+import SimpleTable from './table'
 
 function CharacterDropDown(props) {
     const [items, setItems] = useState([]);
@@ -45,20 +46,24 @@ function CharacterDropDown(props) {
     }else{
       return (
         <div>
-          <div className="categories-wrapper">
-              <div className="categories-title">
-                Categories : 
-              </div>
-              <div className="categories-dropdown">
-                  <select className="dropdown-select" onChange={e => handleAddrTypeChange(e)}>
-                  {items}
-                  </select>
-              </div>
-          </div>
+       
           <div>
               <div>
+                  <div className="categories-wrapper">
+                      <div className="categories-title">
+                        Categories : 
+                      </div>
+                      <div className="categories-dropdown">
+                          <select className="dropdown-select" onChange={e => handleAddrTypeChange(e)}>
+                          {items}
+                          </select>
+                      </div>
+                  </div>
                   <CategoriesLineChart data={props.data} pick={pick} />
-                  <DetailedTable data={props.data[pick]}/>
+              </div>
+
+              <div className="table-wrapper">
+               <SimpleTable data={props.detailed[pick]}/>
               </div>
           </div>
           </div>

@@ -43,7 +43,7 @@ function MainPage(props) {
                 </div>
                 
                 <div className="categories-drilldown">
-                    <CharacterDropDown data={data.data.graph_response.CategoryMap}/>
+                    <CharacterDropDown data={data.data.graph_response.CategoryMap} detailed={data.data.graph_response.category_map_detailed}/>
                 </div>
           </div>
          

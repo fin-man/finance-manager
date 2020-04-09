@@ -64,7 +64,8 @@
     margin-bottom: 20px;
     display: flex;
     justify-content: center;
-
+    position: sticky;
+    top: 0;
 }
 
 .dropdown-select{
@@ -77,4 +78,8 @@
 
 .categories-line{
     width: 95%;
+}
+
+.table-wrapper{
+    margin: 50px;
 }
