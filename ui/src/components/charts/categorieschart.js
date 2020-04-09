@@ -9,6 +9,7 @@ function CategoriesChart(props) {
 
     const options = {
         chart: {
+          height: 500,
           type: "pie"
         },
         series: [

@@ -32,13 +32,16 @@ function MainPage(props) {
       
       return (
           <div>
-                <div >
-                <MainChart data={data} startDate={FormatDate(props.startDate)} endDate={FormatDate(props.endDate)}  />
+                <div className="main-chart-wrapper">
+                    <div className="main-chart" >
+                        <MainChart data={data} startDate={FormatDate(props.startDate)} endDate={FormatDate(props.endDate)}  />
+                    </div>
+                    <div className="category-chart">
+                        <CategoriesChart data={data.data.graph_response.CategoryMap} />
+                    </div>
                 </div>
-                <div>
-                    <CategoriesChart data={data.data.graph_response.CategoryMap} />
-                </div>
-                <div>
+                
+                <div className="categories-drilldown">
                     <CharacterDropDown data={data.data.graph_response.CategoryMap}/>
                 </div>
           </div>

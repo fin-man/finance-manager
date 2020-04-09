@@ -32,7 +32,7 @@ function CharacterDropDown(props) {
     return (
 
         <div>
-            <div>
+            <div className="categories-dropdown">
                 <select onChange={e => handleAddrTypeChange(e)}>
                 {items}
                 </select>
@@ -51,10 +51,6 @@ function CharacterDropDown(props) {
 
 function CategoriesLineChart(props){
     
-    console.log(props.pick)
-    console.log(props.data[props.pick])
-
-
     const options = {
         chart: {
           type: 'column',

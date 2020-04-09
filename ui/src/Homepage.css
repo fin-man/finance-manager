@@ -1,0 +1,38 @@
+
+.datepicker-title{
+    color: blue;
+    margin: 10px;
+}
+
+.datepicker{
+    margin: 10px;
+}
+
+.datepicker-container{
+    display: flex;
+}
+
+.datetime-wrapper{
+    display: flex;
+    justify-content: center;
+}
+
+.main-chart-wrapper{
+    display: flex;
+    height: 600px;
+}
+
+.main-chart{
+    width: 70%;
+    height: 600px;
+}
+
+.mainchart-wrapper{
+    margin-top: 50px;
+}
+
+.categories-dropdown{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+

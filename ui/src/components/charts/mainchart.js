@@ -6,6 +6,7 @@ function MainChart(props) {
 
     const options = {
         chart: {
+          height: 600,
           type: 'column',
           zoomType: 'x'
 

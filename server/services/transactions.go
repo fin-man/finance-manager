@@ -22,11 +22,6 @@ type GraphResponse struct {
 	CategoryMap map[categories.Category][][]float64 `json"category_graph_data"`
 }
 
-// type CategoryGraphResponse struct {
-// 	Category  string      `json:"category"`
-// 	GraphData [][]float64 `json:"category_graph_data"`
-// }
-
 func NewTransactionService() *TransactionService {
 	transactionModel := models.NewElasticSearchModel()
 	return &TransactionService{

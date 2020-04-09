@@ -31,14 +31,14 @@ func (c *Chase) ProcessCSV(records []*transactionstypes.ChaseTransaction) []*cat
 		formatedTime, err := c.ConverTime(record.TransactionDate)
 
 		if err != nil {
-			log.Printf("Unable to convert time in CapitalOne for record : %s \n", record.String())
+			log.Printf("Unable to convert time in Chase for record : %s \n", record.String())
 			//TO DO : ALERT EXTERNALLY
 			continue //skip the record
 		}
 
 		amountToFloat, err := strconv.ParseFloat(record.Amount, 64)
 		if err != nil {
-			log.Printf("Unable to convert the amount in CapitalOne for record : %s \n", record.String())
+			log.Printf("Unable to convert the amount in Chase for record : %s \n", record.String())
 			//TO DO : ALERT EXTERNALLY
 			continue //skip the record
 		}
