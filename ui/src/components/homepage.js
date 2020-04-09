@@ -29,7 +29,7 @@ function HomePage() {
 
                 <div className="datepicker-container">
                     <div className="datepicker-title">
-                        Start Date :
+                        End Date :
                     </div>
                     <div className="datepicker">
                         <DatePicker selected={endDate} onChange={date => setEndDate(date)} dateFormat="yyyy-MM-dd" />

@@ -36,6 +36,7 @@ func (t *TransactionHandler) CreateTransaction(w http.ResponseWriter, r *http.Re
 	}
 
 	transaction.MakeAmountPositive() //some banks have a mount as negative
+	transaction.ToLowerCase()
 
 	data, err := json.Marshal(transaction)
 	if err != nil {
@@ -53,6 +54,30 @@ func (t *TransactionHandler) CreateTransaction(w http.ResponseWriter, r *http.Re
 
 	responseMessage := fmt.Sprintf(CreatedResponse, string(data), "created_successfully")
 	fmt.Fprintf(w, responseMessage)
+}
+
+func (t *TransactionHandler) SearchTransactions(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+	search := r.URL.Query().Get("search")
+	from := r.URL.Query().Get("from")
+	to := r.URL.Query().Get("to")
+
+	tr, err := t.TransactionService.SearchTransaction(search, from, to)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+
+	if err := json.NewEncoder(w).Encode(tr); err != nil {
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+	}
 }
 
 func (t *TransactionHandler) GetAllTransactions(w http.ResponseWriter, r *http.Request) {

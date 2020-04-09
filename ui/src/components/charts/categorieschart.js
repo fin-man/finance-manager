@@ -12,6 +12,9 @@ function CategoriesChart(props) {
           height: 500,
           type: "pie"
         },
+        title: {
+          text: ''
+        },
         series: [
           {
             data: MassageData(props.data)

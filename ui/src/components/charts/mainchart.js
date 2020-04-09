@@ -12,16 +12,26 @@ function MainChart(props) {
 
         },
         title: {
-          text: 'My chart'
+          text: ''
         },
         xAxis: {
             type: 'datetime',
+            title: {
+              title: 'text'
+            },
             labels: {
               format: '{value:%Y-%b-%e}'
             },
           },
+          yAxis: {
+            title:{
+              text: 'Amount'
+            },
+          },
+        
         series: [
           {
+            name : "Dates",
             data:  props.data.data.graph_response.all_graph_data
           }
         ]
@@ -29,7 +39,6 @@ function MainChart(props) {
 
   return (
     <div >
-        Main Chart
         <HighchartsReact highcharts={Highcharts} options={options} />
     </div>
   );

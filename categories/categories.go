@@ -1,5 +1,7 @@
 package categories
 
+import "strings"
+
 type NormalizedTransaction struct {
 	TransactionDate string   `csv:"transaction_date" json:"transaction_date"`
 	Amount          float64  `csv:"amount"  json:"amount"`
@@ -14,4 +16,10 @@ func (n *NormalizedTransaction) MakeAmountPositive() {
 	if n.Amount < 0 {
 		n.Amount *= -1
 	}
+}
+
+func (n *NormalizedTransaction) ToLowerCase() {
+
+	n.Description = strings.ToLower(n.Description)
+
 }

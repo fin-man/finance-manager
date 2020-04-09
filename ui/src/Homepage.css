@@ -1,7 +1,9 @@
 
 .datepicker-title{
-    color: blue;
-    margin: 10px;
+    color:black;
+    margin-top: 13px;
+    margin-right: 5px;
+    font-size: 20px;
 }
 
 .datepicker{
@@ -23,7 +25,7 @@
 }
 
 .main-chart{
-    width: 70%;
+    width: 67%;
     height: 600px;
 }
 
@@ -31,8 +33,44 @@
     margin-top: 50px;
 }
 
-.categories-dropdown{
+/* .categories-dropdown{
     margin-top: 50px;
     margin-bottom: 50px;
+} */
+
+.react-datepicker__input-container input{
+    width: 300px;
+    height: 25px;
+    font-size: 20px;
+    text-align: center;
+    margin-right: 20px;
+    border-radius: 5px;
 }
 
+
+.categories-title{
+    display: flex;
+    font-size: 20px;
+    margin-top: 5px;
+}
+
+.categories-dropdown{
+    display: flex;
+    margin-left: 10px;
+}
+
+.categories-wrapper{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+
+}
+
+.dropdown-select{
+    height: 35px;
+    width: 150px;
+    font-size: 18px;
+    padding-left: 5px;
+    border-radius: 5px;
+}

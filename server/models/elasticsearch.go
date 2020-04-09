@@ -96,6 +96,54 @@ func (e *ElasticSearchModel) GetAllTransactions() (*TransactionResponse, error) 
 	return &tr, err
 }
 
+func (e *ElasticSearchModel) SearchTransaction(search, from, to string) (*TransactionResponse, error) {
+	var buf bytes.Buffer
+	var tr TransactionResponse
+
+	query := map[string]interface{}{
+		"from": 0,
+		"size": 10000,
+		"sort": []map[string]map[string]string{{"transaction_date": {"order": "desc"}}},
+		"query": map[string]interface{}{
+			"multi_match": map[string]interface{}{
+				"query":  search,
+				"fields": []string{"description"},
+			},
+		},
+	}
+
+	if err := json.NewEncoder(&buf).Encode(query); err != nil {
+		return &tr, err
+	}
+
+	// Perform the search request.
+	res, err := e.ElasticClient.Client.Search(
+		e.ElasticClient.Client.Search.WithContext(context.Background()),
+		e.ElasticClient.Client.Search.WithIndex("transactions"),
+		e.ElasticClient.Client.Search.WithBody(&buf),
+		e.ElasticClient.Client.Search.WithTrackTotalHits(true),
+		e.ElasticClient.Client.Search.WithPretty(),
+	)
+
+	if err != nil {
+		return &tr, err
+	}
+
+	defer res.Body.Close()
+
+	readBuf := new(bytes.Buffer)
+
+	readBuf.ReadFrom(res.Body)
+
+	err = json.Unmarshal(readBuf.Bytes(), &tr)
+
+	if err != nil {
+		return &tr, err
+	}
+
+	return &tr, err
+}
+
 func (e *ElasticSearchModel) GetTransactionsInDateRange(from string, to string) (*TransactionResponse, error) {
 	var buf bytes.Buffer
 	var tr TransactionResponse

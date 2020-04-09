@@ -19,7 +19,7 @@ function CharacterDropDown(props) {
 
         for (let i = 1; i <= response.data.length; i++) {
             if (typeof response.data[i] !== 'undefined') {
-            arr.push(<option key={i} value={response.data[i]} >{response.data[i]} </option>)
+            arr.push(<option className="dropdown-option" key={i} value={response.data[i]} >{response.data[i]} </option>)
             }
         }
         
@@ -31,17 +31,22 @@ function CharacterDropDown(props) {
 
     return (
 
-        <div>
+      <div>
+        <div className="categories-wrapper">
+            <div className="categories-title">
+              Categories : 
+            </div>
             <div className="categories-dropdown">
-                <select onChange={e => handleAddrTypeChange(e)}>
+                <select className="dropdown-select" onChange={e => handleAddrTypeChange(e)}>
                 {items}
                 </select>
-
             </div>
-
+        </div>
+        <div>
             <div>
                 <CategoriesLineChart data={props.data} pick={pick} />
             </div>
+        </div>
         </div>
  
         
@@ -56,9 +61,6 @@ function CategoriesLineChart(props){
           type: 'column',
           zoomType: 'x'
 
-        },
-        title: {
-          text: 'My chart'
         },
         xAxis: {
             type: 'datetime',
@@ -77,7 +79,6 @@ function CategoriesLineChart(props){
 
         return(
             <div >
-            Main Chart
             <HighchartsReact highcharts={Highcharts} options={options} />
             </div>    
         )

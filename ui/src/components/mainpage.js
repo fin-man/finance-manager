@@ -6,6 +6,7 @@ import CategoriesChart from './charts/categorieschart'
 import FormatDate from './../utils/formatDates'
 import CompareDates from './../utils/compareDates'
 import "react-datepicker/dist/react-datepicker.css";
+import './../Homepage.css'
 
 function MainPage(props) {
   const [data , setData] = useState({data: null});

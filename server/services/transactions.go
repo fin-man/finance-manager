@@ -34,6 +34,9 @@ func (t *TransactionService) CreateTransaction(data []byte, id string) error {
 	return t.TransactionModel.CreateTransaction(data, id)
 }
 
+func (t *TransactionService) SearchTransaction(search, from, to string) (*models.TransactionResponse, error) {
+	return t.TransactionModel.SearchTransaction(search, from, to)
+}
 func (t *TransactionService) GetAllTransactions() (*models.TransactionResponse, error) {
 	return t.TransactionModel.GetAllTransactions()
 }
