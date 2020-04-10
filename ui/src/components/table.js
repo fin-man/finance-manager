@@ -39,12 +39,10 @@ function createData(transaction_date, bank, description, amount) {
 export default function SimpleTable(props) {
   const classes = useStyles();
   const [rows , setRows] = useState([]);
-  console.log(props.data)
 
 
   useEffect(()=>{
     var rows = [] 
-    console.log("rows" , rows)
     function createRows(){
         if (typeof props.data !== undefined) {
 

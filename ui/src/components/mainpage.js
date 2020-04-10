@@ -5,6 +5,7 @@ import CharacterDropDown from './category'
 import CategoriesChart from './charts/categorieschart'
 import FormatDate from './../utils/formatDates'
 import CompareDates from './../utils/compareDates'
+import MainScoreCard from './mainscorecard'
 import "react-datepicker/dist/react-datepicker.css";
 import './../Homepage.css'
 
@@ -28,17 +29,22 @@ function MainPage(props) {
 
   if (CompareDates(props.startDate , props.endDate)){
     if (data.data !== null) {
-        console.log("Data is tehre")
   
       
       return (
           <div>
+              
+                <MainScoreCard data={data.data.graph_response.all_graph_data} />
+                
                 <div className="main-chart-wrapper">
                     <div className="main-chart" >
                         <MainChart data={data} startDate={FormatDate(props.startDate)} endDate={FormatDate(props.endDate)}  />
                     </div>
                     <div className="category-chart">
                         <CategoriesChart data={data.data.graph_response.CategoryMap} />
+
+        
+           
                     </div>
                 </div>
                 
@@ -49,7 +55,6 @@ function MainPage(props) {
          
         );
     }else{
-        console.log("data still no there")
         return (
             <div>
                 Blargh

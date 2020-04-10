@@ -1,9 +1,9 @@
 
 .datepicker-title{
     color:black;
-    margin-top: 13px;
+    margin-top: 25px;
     margin-right: 5px;
-    font-size: 20px;
+    font-size: 24px;
 }
 
 .datepicker{
@@ -17,6 +17,8 @@
 .datetime-wrapper{
     display: flex;
     justify-content: center;
+    margin-top: 50px;
+
 }
 
 .main-chart-wrapper{
@@ -33,15 +35,10 @@
     margin-top: 50px;
 }
 
-/* .categories-dropdown{
-    margin-top: 50px;
-    margin-bottom: 50px;
-} */
-
 .react-datepicker__input-container input{
-    width: 300px;
-    height: 25px;
-    font-size: 20px;
+    width: 250px;
+    height: 50px;
+    font-size: 25px;
     text-align: center;
     margin-right: 20px;
     border-radius: 5px;
@@ -50,8 +47,9 @@
 
 .categories-title{
     display: flex;
-    font-size: 20px;
-    margin-top: 5px;
+    font-weight: bol;
+    font-size: 24px;
+    margin-top: 10px;
 }
 
 .categories-dropdown{
@@ -69,11 +67,14 @@
 }
 
 .dropdown-select{
-    height: 35px;
-    width: 150px;
-    font-size: 18px;
-    padding-left: 5px;
-    border-radius: 5px;
+    height: 50px;
+    width: 200px;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    border: none;
+    background-color: '#84a9ac';
 }
 
 .categories-line{
@@ -82,4 +83,76 @@
 
 .table-wrapper{
     margin: 50px;
+}
+
+
+.mainscorecard-wrapper{
+    display: flex;
+    justify-content: center;
+    font-size: 25px;
+    margin-bottom: 40px;
+}
+
+.mainscorecard-total-transactions-wrapper{
+    display: flex;
+    margin: 10px;
+}
+
+.mainscorecard-total-wrapper{
+    display: flex;
+    margin: 10px;
+}
+
+.mainscorecard-total-transactions-title{
+    padding-right: 10px;
+}
+
+.mainscorecard-total-title{
+    padding-right: 10px;
+}
+
+.category-chart-wrapper{
+    display: flex;
+}
+
+.categoryscorecard-total-transactions-wrapper{
+    display: flex;
+}
+
+
+.categoryscorecard-total-wrapper{
+    display: flex;
+}
+
+.categoryscorecard-total-transactions-title{
+    padding-right: 10px;
+}
+
+.categoryscorecard-total-title{
+    padding-right: 10px;
+}
+
+.category-linechart-wrapper{
+    width: 80%;
+}
+
+.category-scorecard-wrapper{
+    width: 20%;
+}
+
+.categoryscorecard-total-transactions-wrapper{
+    margin-top: 30%;
+    margin-bottom: 50px;
+    font-size: 25px;
+    justify-content: center;
+}
+
+.categoryscorecard-total-wrapper{
+    margin-bottom: 50px;
+    font-size: 25px;
+    justify-content: center;
+}
+
+.category-chart{
+    justify-content: center;
 }

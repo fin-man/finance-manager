@@ -1,9 +1,8 @@
 import React, { useState,useEffect } from 'react';
-import axios from 'axios';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import DetailedTable from './detailedtable'
 import SimpleTable from './table'
+import CategoryScoreCard from './categoryscorecard'
 
 function CharacterDropDown(props) {
     const [items, setItems] = useState([]);
@@ -16,10 +15,8 @@ function CharacterDropDown(props) {
       var arr = []
 
       function RunThis(){
-        console.log("New data set ---- ")
         if (typeof props.data !== undefined) {
             for(var v in props.data){
-              console.log(v)
              arr.push(<option className="dropdown-option" key={v} value={v} >{v} </option>)
           }
         }
@@ -59,7 +56,15 @@ function CharacterDropDown(props) {
                           </select>
                       </div>
                   </div>
-                  <CategoriesLineChart data={props.data} pick={pick} />
+                  <div className="category-chart-wrapper">
+                    <div className="category-linechart-wrapper">
+                      <CategoriesLineChart data={props.data} pick={pick} />
+                    </div>
+                    <div className="category-scorecard-wrapper">
+                      <CategoryScoreCard data={props.data[pick]}/>
+                    </div>
+                  </div>
+               
               </div>
 
               <div className="table-wrapper">

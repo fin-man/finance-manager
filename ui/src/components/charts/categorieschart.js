@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Highcharts from 'highcharts';
 import PieChart from "highcharts-react-official";
-
+import MainScoreCard from './../mainscorecard'
 
 function CategoriesChart(props) {
 
