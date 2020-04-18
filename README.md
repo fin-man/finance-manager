@@ -21,21 +21,21 @@
 - docker and docker-compose 
 
 
-- To run the application please follow these steps in order 
+#### To run the application please follow these steps in order 
 1. Spin up the local elastic search cluster 
-..* ./set_max_map_count.sh 
-..* `docker-compose up` 
+    - ./set_max_map_count.sh 
+    - `docker-compose up` 
 2. When the elastic search cluster is up and running 
-..* `make build-all`
+    - `make build-all`
 3. in one terminal window run
-⋅⋅* `make run-server`
+    - `make run-server`
 4. in another terminal window run 
-..* `make run-filewatcher` 
+    - `make run-filewatcher` 
 
 
 ### To populate the data into the elastic search cluster 
 - ( Assuming all the above components are running ) drop the transaction csv files into the /data directory 
-..* this will automatically detect the file was added and populate the data accordingly
+    - this will automatically detect the file was added and populate the data accordingly
 
 
 ### New Issue Template 
