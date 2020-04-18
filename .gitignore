@@ -5,10 +5,9 @@
 
 # UI 
 # dependencies
-/node_modules
+/ui/node_modules
 /.pnp
 .pnp.js
-ui/node_modules/.cache
 # testing
 /coverage
 
