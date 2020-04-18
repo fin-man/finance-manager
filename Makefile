@@ -13,3 +13,4 @@ run-server:
 
 run-filewatcher:
 	./bin/filewatcher
+
