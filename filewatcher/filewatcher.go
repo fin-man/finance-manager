@@ -1,6 +1,7 @@
 package main
 
 import (
+	"finance-manager/categories"
 	"finance-manager/clients/recordcreator"
 	"finance-manager/csvprocessors"
 	"finance-manager/filemanager"
@@ -9,7 +10,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
 )
 
 func main() {
@@ -29,39 +29,55 @@ func main() {
 func ProcessFile(data ...interface{}) error {
 	fmt.Printf("FilePath : %s \n", data[0])
 	fmt.Printf("FileName : %s \n", data[1])
-	fileName := data[1].(string)
+	// fileName := data[1].(string)
 	filePath := data[0].(string)
 
 	recordCreator := recordcreator.NewRecordCreator()
 
-	if strings.Contains(fileName, "chase") {
-		log.Println("Detected a new Chase file")
-
-		err := HandleChase(filePath, recordCreator)
-
-		if err != nil {
-			log.Println(err)
-			return err
-		}
-
-		return nil
-
-	} else if strings.Contains(fileName, "capital_one") {
-		log.Println("Detected a new Chase file")
-		err := HandleCapitalOne(filePath, recordCreator)
-
-		if err != nil {
-			log.Println(err)
-			return err
-		}
-
-		return nil
+	err := HandleOverall(filePath, recordCreator)
+	if err != nil {
+		return err
 	}
 
 	log.Printf("Unknown File Found ..")
-	//TO DO alert
 
 	return nil
+}
+
+func HandleOverall(filePath string, recordCreator *recordcreator.RecordCreator) error {
+	fm := filemanager.FileManager{}
+	file, err := fm.OpenFile(filePath, os.O_RDWR|os.O_CREATE, os.ModePerm)
+
+	if err != nil {
+		return err
+	}
+
+	defer file.Close()
+
+	records := []*categories.NormalizedTransaction{}
+
+	csvProcessor := csvprocessors.NewCSVprocessor()
+
+	err = csvProcessor.Unmarshal(file, &records)
+
+	fmt.Println(records)
+	if err != nil {
+
+		//file is prolly dont match the format
+		return err
+	}
+
+	for _, v := range records {
+
+		//	_, ok := categories.OverallTransactionTypes[string(v.Category)]
+		err = recordCreator.CreateNewRecord(v)
+		if err != nil {
+			log.Println(err)
+		}
+	}
+
+	return nil
+
 }
 
 func HandleChase(filePath string, recordCreator *recordcreator.RecordCreator) error {

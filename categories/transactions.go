@@ -20,6 +20,24 @@ const (
 	Other         Category = "other"
 )
 
+var OverallTransactionTypes = map[string]Category{
+	"gas":            Gas,
+	"groceries":      Groceries,
+	"personal":       Personal,
+	"shopping":       Shopping,
+	"education":      Education,
+	"bills":          Bills,
+	"health":         Health,
+	"automotive":     Automotive,
+	"travel":         Travel,
+	"home":           Home,
+	"miscellaneous":  Miscellaneous,
+	"food_and_drink": FoodAndDrink,
+	"fees":           Fees,
+	"entertainment":  Entertainment,
+	"other":          Other,
+}
+
 var ChaseTransactionTypes = map[string]Category{
 	"Gas":                Gas,
 	"Groceries":          Groceries,
