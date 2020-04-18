@@ -69,7 +69,10 @@ func HandleOverall(filePath string, recordCreator *recordcreator.RecordCreator) 
 
 	for _, v := range records {
 
-		//	_, ok := categories.OverallTransactionTypes[string(v.Category)]
+		_, ok := categories.OverallTransactionTypes[string(v.Category)]
+		if !ok {
+			return fmt.Errorf("Invalid Category for record : %v", v)
+		}
 		err = recordCreator.CreateNewRecord(v)
 		if err != nil {
 			log.Println(err)
