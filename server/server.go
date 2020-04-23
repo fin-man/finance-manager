@@ -15,13 +15,18 @@ func main() {
 	router := routers.NewRouter()
 
 	transactionHandler := handlers.NewTransactionHandler()
+	categoriesHandler := handlers.NewCategoriesHandler()
+
 	router.Router.HandleFunc("/transactions", transactionHandler.GetAllTransactions).Methods("GET")
 	router.Router.HandleFunc("/transactions/range", transactionHandler.GetTransactionsInDateRange).Methods("GET")
 	router.Router.HandleFunc("/transactions", transactionHandler.CreateTransaction).Methods("POST")
 	router.Router.HandleFunc("/transactions/graph", transactionHandler.GetAllTransactionsGraph).Methods("GET")
 	router.Router.HandleFunc("/transactions/search", transactionHandler.SearchTransactions).Methods("GET")
-	categoriesHandler := handlers.NewCategoriesHandler()
+
 	router.Router.HandleFunc("/categories", categoriesHandler.GetAllCategories).Methods("GET")
+
+	csvHandler := handlers.NewCSVHandler()
+	router.Router.HandleFunc("/csv/fields", csvHandler.GetAllFields)
 	port := os.Getenv("SERVER_PORT")
 
 	if port == "" {
