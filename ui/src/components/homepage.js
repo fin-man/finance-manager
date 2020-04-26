@@ -9,10 +9,8 @@ function HomePage() {
     const firstDate = new Date()
     firstDate.setDate(firstDate.getDate() - 30)
 
-    
     const [startDate, setStartDate] = useState(firstDate);
     const [endDate, setEndDate] = useState(new Date());
-  
 
     return(
         <div >
@@ -25,19 +23,15 @@ function HomePage() {
                         <DatePicker selected={startDate} onChange={date => setStartDate(date)} dateFormat="yyyy-MM-dd" />
                     </div>
                 </div>
-
-
                 <div className="datepicker-container">
                     <div className="datepicker-title">
                         End Date :
                     </div>
                     <div className="datepicker">
-                        <DatePicker selected={endDate} onChange={date => setEndDate(date)} dateFormat="yyyy-MM-dd" />
+                        <DatePicker selected={endDate} onChange={date => setEndDate(date)}  minDate={startDate} showDisabledMonthNavigation dateFormat="yyyy-MM-dd" />
                     </div>
                 </div>
             </div>
-           
-
             <div className="mainchart-wrapper">
                 <MainPage startDate={startDate} endDate={endDate}/>
             </div>
