@@ -1,6 +1,6 @@
 package services
 
-import "finance-manager/categories"
+import "github.com/fin-man/finance-manager/categories"
 
 type CategoriesService struct {
 }

@@ -1,11 +1,13 @@
 package services
 
 import (
-	"finance-manager/categories"
-	"finance-manager/server/models"
-	"finance-manager/utils"
 	"log"
 	"sort"
+
+	"github.com/fin-man/finance-manager/utils"
+
+	"github.com/fin-man/finance-manager/categories"
+	"github.com/fin-man/finance-manager/server/models"
 )
 
 type TransactionService struct {

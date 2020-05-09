@@ -1,8 +1,9 @@
 package csvprocessors
 
 import (
-	"finance-manager/categories"
 	"os"
+
+	"github.com/fin-man/finance-manager/categories"
 
 	"github.com/gocarina/gocsv"
 )

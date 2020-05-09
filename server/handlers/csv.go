@@ -2,8 +2,9 @@ package handlers
 
 import (
 	"encoding/json"
-	"finance-manager/server/services"
 	"net/http"
+
+	"github.com/fin-man/finance-manager/server/services"
 )
 
 type CSVHandler struct {

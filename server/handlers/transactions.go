@@ -2,11 +2,14 @@ package handlers
 
 import (
 	"encoding/json"
-	"finance-manager/categories"
-	"finance-manager/server/services"
-	"finance-manager/utils"
 	"fmt"
 	"net/http"
+
+	"github.com/fin-man/finance-manager/server/services"
+
+	"github.com/fin-man/finance-manager/utils"
+
+	"github.com/fin-man/finance-manager/categories"
 )
 
 type TransactionHandler struct {

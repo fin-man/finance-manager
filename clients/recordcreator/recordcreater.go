@@ -2,8 +2,10 @@ package recordcreator
 
 import (
 	"encoding/json"
-	"finance-manager/categories"
-	"finance-manager/requests"
+
+	"github.com/fin-man/finance-manager/requests"
+
+	"github.com/fin-man/finance-manager/categories"
 )
 
 type RecordCreator struct {

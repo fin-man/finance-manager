@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"finance-manager/categories"
-	"finance-manager/elasticsearch"
 	"fmt"
 	"log"
 	"strings"
+
+	"github.com/fin-man/finance-manager/elasticsearch"
+
+	"github.com/fin-man/finance-manager/categories"
 )
 
 type ElasticSearchModel struct {

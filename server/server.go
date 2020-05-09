@@ -1,13 +1,14 @@
 package main
 
 import (
-	"finance-manager/server/handlers"
+	"github.com/fin-man/finance-manager/server/handlers"
 
-	"finance-manager/server/routers"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/fin-man/finance-manager/server/routers"
 )
 
 func main() {
