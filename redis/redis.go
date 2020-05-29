@@ -3,6 +3,7 @@ package redis
 import (
 	"context"
 	"log"
+	"time"
 
 	"github.com/go-redis/redis/v8"
 )
@@ -27,4 +28,16 @@ func NewRedisClient() *RedisClient {
 	return &RedisClient{
 		Client: client,
 	}
+}
+
+func (r *RedisClient) Set(key, value string) error {
+	return r.Client.Set(context.Background(), key, value, 30*time.Second).Err()
+}
+
+func (r *RedisClient) Get(key string) (string, error) {
+	return r.Client.Get(context.Background(), key).Result()
+}
+
+func (r *RedisClient) GetAllKeys() ([]string, error) {
+	return r.Client.Keys(context.Background(), "*").Result()
 }
