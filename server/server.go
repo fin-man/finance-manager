@@ -21,13 +21,16 @@ func main() {
 	fmt.Println(redis)
 	transactionHandler := handlers.NewTransactionHandler()
 	categoriesHandler := handlers.NewCategoriesHandler()
+	collectorHandler := handlers.NewCollectorHandler()
 
 	router.Router.HandleFunc("/transactions", transactionHandler.GetAllTransactions).Methods("GET")
 	router.Router.HandleFunc("/transactions/range", transactionHandler.GetTransactionsInDateRange).Methods("GET")
 	router.Router.HandleFunc("/transactions", transactionHandler.CreateTransaction).Methods("POST")
 	router.Router.HandleFunc("/transactions/graph", transactionHandler.GetAllTransactionsGraph).Methods("GET")
 	router.Router.HandleFunc("/transactions/search", transactionHandler.SearchTransactions).Methods("GET")
-
+	router.Router.HandleFunc("/collectors", collectorHandler.GetAllRegisteredCollectors).Methods("GET")
+	router.Router.HandleFunc("/collector", collectorHandler.RegisterNewCollector).Methods("POST")
+	router.Router.HandleFunc("/collector", collectorHandler.GetRegisteredCollector).Methods("GET")
 	router.Router.HandleFunc("/categories", categoriesHandler.GetAllCategories).Methods("GET")
 
 	csvHandler := handlers.NewCSVHandler()

@@ -52,22 +52,21 @@ func (c *CollectorHandler) GetAllRegisteredCollectors(w http.ResponseWriter, r *
 }
 
 func (c *CollectorHandler) GetRegisteredCollector(w http.ResponseWriter, r *http.Request) {
-	newCollector := make(map[string]string)
 
-	err := json.NewDecoder(r.Body).Decode(&newCollector)
+	collector, ok := r.URL.Query()["collector"]
+
+	if !ok || len(collector[0]) < 1 {
+		http.Error(w, "Invalid URL param 'collector' is missing", http.StatusBadRequest)
+		return
+	}
+
+	hostname, err := c.CollectorService.GetNewCollector(collector[0])
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	collector, err := c.CollectorService.GetNewCollector(newCollector["bank"])
-
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	fmt.Fprintf(w, "%v", collector)
+	fmt.Fprintf(w, "%v", hostname)
 
 }
