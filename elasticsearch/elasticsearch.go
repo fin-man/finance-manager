@@ -13,7 +13,14 @@ type ElasticSearchClient struct {
 
 func NewElasticSearchClient() *ElasticSearchClient {
 
-	es, err := elasticsearch.NewDefaultClient()
+	cfg := elasticsearch.Config{
+		Addresses: []string{
+			"http://localhost:9200",
+		},
+		// ...
+	}
+
+	es, err := elasticsearch.NewClient(cfg)
 
 	es.Ping.WithPretty()
 	if err != nil {

@@ -19,10 +19,15 @@ func NewRedisClient() *RedisClient {
 		DB:       0,  // use default DB
 	})
 
-	_, err := client.Ping(context.Background()).Result()
+	for i := 1; i <= 10; i++ {
+		_, err := client.Ping(context.Background()).Result()
 
-	if err != nil {
-		log.Fatal(err)
+		if err != nil && i != 10 {
+			log.Println(err)
+		} else if err != nil {
+			log.Fatal(err)
+		}
+		time.Sleep(5 * time.Second)
 	}
 
 	return &RedisClient{

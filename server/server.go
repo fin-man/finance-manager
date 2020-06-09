@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/fin-man/finance-manager/server/handlers"
-	"github.com/fin-man/finance-manager/server/models"
 
 	"fmt"
 	"log"
@@ -16,12 +15,11 @@ func main() {
 
 	router := routers.NewRouter()
 
-	redis := models.NewRedisModel()
-
-	fmt.Println(redis)
 	transactionHandler := handlers.NewTransactionHandler()
 	categoriesHandler := handlers.NewCategoriesHandler()
 	collectorHandler := handlers.NewCollectorHandler()
+
+	fmt.Println("here")
 
 	router.Router.HandleFunc("/transactions", transactionHandler.GetAllTransactions).Methods("GET")
 	router.Router.HandleFunc("/transactions/range", transactionHandler.GetTransactionsInDateRange).Methods("GET")
