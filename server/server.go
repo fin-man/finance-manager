@@ -1,6 +1,8 @@
 package main
 
 import (
+	"github.com/fin-man/finance-manager/server/services"
+
 	"github.com/fin-man/finance-manager/server/handlers"
 
 	"fmt"
@@ -18,8 +20,11 @@ func main() {
 	transactionHandler := handlers.NewTransactionHandler()
 	categoriesHandler := handlers.NewCategoriesHandler()
 	collectorHandler := handlers.NewCollectorHandler()
+	collectorService := services.NewCollectorService()
+	collectorManager := services.NewCollectorManager(collectorService)
 
-	fmt.Println("here")
+	fmt.Println("Start collector manager...")
+	go collectorManager.RunCollectorHealthChecks()
 
 	router.Router.HandleFunc("/transactions", transactionHandler.GetAllTransactions).Methods("GET")
 	router.Router.HandleFunc("/transactions/range", transactionHandler.GetTransactionsInDateRange).Methods("GET")

@@ -46,3 +46,7 @@ func (r *RedisClient) Get(key string) (string, error) {
 func (r *RedisClient) GetAllKeys() ([]string, error) {
 	return r.Client.Keys(context.Background(), "*").Result()
 }
+
+func (r *RedisClient) Remove(key string) (int64, error) {
+	return r.Client.Del(context.Background(), key).Result()
+}

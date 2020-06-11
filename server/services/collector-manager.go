@@ -12,13 +12,15 @@ type CollectorManager struct {
 }
 
 var (
-	retries = 3
+	retries = 2
 	timeOut = 5 * time.Second
 )
 
-func NewCollectorManager() *CollectorManager {
+func NewCollectorManager(collectorService *CollectorService) *CollectorManager {
 
-	return &CollectorManager{}
+	return &CollectorManager{
+		CollectorService: collectorService,
+	}
 
 }
 
@@ -40,9 +42,17 @@ func (n *CollectorManager) RunCollectorHealthChecks() {
 
 			err = n.HealthCheck(c, collectorURL)
 			if err != nil {
+				//remove from
+				_, err := n.CollectorService.RemoveCollector(c)
+				if err != nil {
+					log.Println("Unable to remove ", err)
+				}
 
+				log.Println("Removed : ", c)
 			}
 		}
+		log.Println("Waiting ...")
+		time.Sleep(2 * time.Second)
 	}
 
 }
@@ -50,18 +60,18 @@ func (n *CollectorManager) RunCollectorHealthChecks() {
 func (n *CollectorManager) HealthCheck(collector, collectorURL string) error {
 
 	for i := 0; i < retries; i++ {
-		resp, err := http.Get(collectorURL + "/healthcheck")
+		resp, err := http.Get(collectorURL + "/health")
 
 		if err != nil {
-			log.Printf("%s is unhealthy : %v", err)
+			log.Printf("%s is unhealthy : %v", collectorURL, err)
 		} else if resp.StatusCode == 200 {
-			break
+			return nil
 		}
 
 		time.Sleep(timeOut)
 	}
 
-	log.Printf("%s healthcheck failed after %d retries\n", retries)
+	log.Printf("%s healthcheck failed after %d retries\n", collectorURL, retries)
 
 	return fmt.Errorf("%s healthcheck failed after %d retries", retries)
 }
