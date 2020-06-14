@@ -3,72 +3,39 @@ package categories
 type Category string
 
 const (
-	Gas           Category = "gas"
-	Groceries     Category = "groceries"
-	Personal      Category = "personal"
-	Shopping      Category = "shopping"
-	Education     Category = "education"
-	Bills         Category = "bills"
-	Health        Category = "health"
-	Automotive    Category = "automotive"
-	Travel        Category = "travel"
-	Home          Category = "home"
-	Miscellaneous Category = "miscellaneous"
-	FoodAndDrink  Category = "food_and_drink"
-	Fees          Category = "fees"
-	Entertainment Category = "entertainment"
-	Other         Category = "other"
+	Gas               Category = "gas"
+	Groceries         Category = "groceries"
+	Personal          Category = "personal"
+	Shopping          Category = "shopping"
+	Education         Category = "education"
+	Bills             Category = "bills"
+	Health            Category = "health"
+	Automotive        Category = "automotive"
+	Travel            Category = "travel"
+	Home              Category = "home"
+	Miscellaneous     Category = "miscellaneous"
+	FoodAndDrink      Category = "food_and_drink"
+	Fees              Category = "fees"
+	Entertainment     Category = "entertainment"
+	GiftsAndDonations Category = "gifts_and_donations"
+	Other             Category = "other"
 )
 
 var OverallTransactionTypes = map[string]Category{
-	"gas":            Gas,
-	"groceries":      Groceries,
-	"personal":       Personal,
-	"shopping":       Shopping,
-	"education":      Education,
-	"bills":          Bills,
-	"health":         Health,
-	"automotive":     Automotive,
-	"travel":         Travel,
-	"home":           Home,
-	"miscellaneous":  Miscellaneous,
-	"food_and_drink": FoodAndDrink,
-	"fees":           Fees,
-	"entertainment":  Entertainment,
-	"other":          Other,
+	"gas":                 Gas,
+	"groceries":           Groceries,
+	"personal":            Personal,
+	"shopping":            Shopping,
+	"education":           Education,
+	"bills":               Bills,
+	"health":              Health,
+	"automotive":          Automotive,
+	"travel":              Travel,
+	"home":                Home,
+	"miscellaneous":       Miscellaneous,
+	"food_and_drink":      FoodAndDrink,
+	"gifts_and_donations": GiftsAndDonations,
+	"fees":                Fees,
+	"entertainment":       Entertainment,
+	"other":               Other,
 }
-
-// var ChaseTransactionTypes = map[string]Category{
-// 	"Gas":                Gas,
-// 	"Groceries":          Groceries,
-// 	"Personal":           Personal,
-// 	"Shopping":           Shopping,
-// 	"Education":          Education,
-// 	"Bills & Utilities":  Bills,
-// 	"Health & Wellness":  Health,
-// 	"Automotive":         Automotive,
-// 	"Travel":             Travel,
-// 	"Home":               Home,
-// 	"Miscellaneous":      Miscellaneous,
-// 	"Food & Drink":       FoodAndDrink,
-// 	"Fees & Adjustments": Fees,
-// 	"Entertainment":      Entertainment,
-// }
-
-// var CapitalOneTransactionTypes = map[string]Category{
-// 	"Payment/Credit":      Fees,
-// 	"Health Care":         Health,
-// 	"Other":               Other,
-// 	"Phone/Cable":         Bills,
-// 	"Gas/Automotive":      Gas,
-// 	"Car Rental":          Travel,
-// 	"Dining":              FoodAndDrink,
-// 	"Merchandise":         Groceries,
-// 	"Other Services":      Other,
-// 	"Airfare":             Travel,
-// 	"Lodging":             Travel,
-// 	"Internet":            Bills,
-// 	"Other Travel":        Travel,
-// 	"Entertainment":       Entertainment,
-// 	"Fee/Interest Charge": Fees,
-// }

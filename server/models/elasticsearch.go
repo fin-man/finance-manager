@@ -206,6 +206,5 @@ func (e *ElasticSearchModel) CreateTransaction(data []byte, id string) error {
 
 	defer res.Body.Close()
 
-	log.Println(res)
 	return err
 }
