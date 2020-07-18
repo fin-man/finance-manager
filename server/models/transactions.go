@@ -7,7 +7,7 @@ type TransactionResponse struct {
 }
 
 func NewTransactionsModel() *TransactionModel {
-
+	return &TransactionModel{}
 }
 
 func (e *TransactionModel) GetAllTransactions() {
