@@ -1,9 +1,14 @@
 package models
 
+import (
+	"github.com/jinzhu/gorm"
+)
+
 type TransactionModel struct {
 }
 
 type TransactionResponse struct {
+	gorm.
 }
 
 func NewTransactionsModel() *TransactionModel {
