@@ -28,7 +28,7 @@ func DBInit() (*gorm.DB, error) {
 		if err == nil {
 			break
 		}
-		log.Println("Error while connecting to DB : %s", err.Error())
+		log.Printf("Error while connecting to DB : %s", err.Error())
 		log.Println("Trying to connect ... waiting 5 seconds")
 		time.Sleep(5 * time.Second)
 	}
@@ -38,7 +38,7 @@ func DBInit() (*gorm.DB, error) {
 	}
 
 	//create tables at start
-	//  DB.AutoMigrate(&Customer{}, &Certificate{})
+	DB.AutoMigrate(&TransactionModel{})
 
 	//add relationship
 	// DB.Model(&Certificate{}).AddForeignKey("cust_id", "customers(cust_id)", "CASCADE", "CASCADE")
