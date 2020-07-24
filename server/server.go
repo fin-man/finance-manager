@@ -21,11 +21,15 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	log.Println("Initialized DB")
 	//transactionHandler := handlers.NewTransactionHandler()
 	categoriesHandler := handlers.NewCategoriesHandler()
 	collectorHandler := handlers.NewCollectorHandler()
 	collectorService := services.NewCollectorService()
 	collectorManager := services.NewCollectorManager(collectorService)
+
+	fmt.Println("Done creating collectors and handlers ")
 
 	fmt.Println("Start collector manager...")
 	go collectorManager.RunCollectorHealthChecks()

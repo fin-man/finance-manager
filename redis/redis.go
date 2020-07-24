@@ -13,6 +13,7 @@ type RedisClient struct {
 }
 
 func NewRedisClient() *RedisClient {
+	log.Println("Initializing redis client")
 	client := redis.NewClient(&redis.Options{
 		Addr:     "localhost:6379",
 		Password: "", // no password set
