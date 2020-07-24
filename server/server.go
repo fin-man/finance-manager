@@ -28,10 +28,6 @@ func main() {
 	collectorHandler := handlers.NewCollectorHandler()
 	collectorService := services.NewCollectorService()
 	collectorManager := services.NewCollectorManager(collectorService)
-
-	fmt.Println("Done creating collectors and handlers ")
-
-	fmt.Println("Start collector manager...")
 	go collectorManager.RunCollectorHealthChecks()
 
 	// router.Router.HandleFunc("/transactions", transactionHandler.GetAllTransactions).Methods("GET")

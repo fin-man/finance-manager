@@ -27,10 +27,13 @@ func NewRedisClient() *RedisClient {
 			log.Println(err)
 		} else if err != nil {
 			log.Fatal(err)
+		} else {
+			break
 		}
 		time.Sleep(5 * time.Second)
 	}
 
+	log.Println("Done initializing redis client")
 	return &RedisClient{
 		Client: client,
 	}

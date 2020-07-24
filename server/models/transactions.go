@@ -24,7 +24,7 @@ func NewTransactionsModel() *TransactionModel {
 	return &TransactionModel{}
 }
 
-func (TransactionResponse) TableName() string {
+func (t TransactionResponse) TableName() string {
 	return "transactions"
 }
 

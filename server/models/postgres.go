@@ -38,8 +38,10 @@ func DBInit() (*gorm.DB, error) {
 	}
 
 	//create tables at start
-	DB.AutoMigrate(&TransactionModel{})
-
+	err = DB.AutoMigrate(&TransactionModel{}).Error
+	if err != nil {
+		log.Fatal(err)
+	}
 	//add relationship
 	// DB.Model(&Certificate{}).AddForeignKey("cust_id", "customers(cust_id)", "CASCADE", "CASCADE")
 
