@@ -70,3 +70,23 @@ func (c *CollectorHandler) GetRegisteredCollector(w http.ResponseWriter, r *http
 	fmt.Fprintf(w, "%v", hostname)
 
 }
+
+func (c *CollectorHandler) Upload(w http.ResponseWriter, r *http.Request) {
+	collector, ok := r.URL.Query()["collector"]
+
+	if !ok || len(collector[0]) < 1 {
+		http.Error(w, "Invalid URL param 'collector' is missing", http.StatusBadRequest)
+		return
+	}
+
+	hostname, err := c.CollectorService.GetNewCollector(collector[0])
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	builtURL := fmt.Sprintf("%s/upload", hostname)
+
+	http.Redirect(w, r, builtURL, http.StatusSeeOther)
+}
