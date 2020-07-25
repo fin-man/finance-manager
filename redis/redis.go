@@ -40,7 +40,7 @@ func NewRedisClient() *RedisClient {
 }
 
 func (r *RedisClient) Set(key, value string) error {
-	return r.Client.Set(context.Background(), key, value, 30*time.Second).Err()
+	return r.Client.Set(context.Background(), key, value, 0).Err()
 }
 
 func (r *RedisClient) Get(key string) (string, error) {

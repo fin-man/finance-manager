@@ -1,6 +1,6 @@
 *.csv 
 .env
-
+bin
 
 
 # UI 
