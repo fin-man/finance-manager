@@ -38,7 +38,7 @@ func DBInit() (*gorm.DB, error) {
 	}
 
 	//create tables at start
-	err = DB.AutoMigrate(&TransactionModel{}).Error
+	err = DB.AutoMigrate(&TransactionModel{}, &ProcessorModel{}).Error
 	if err != nil {
 		log.Fatal(err)
 	}

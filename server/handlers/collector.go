@@ -5,32 +5,34 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/fin-man/finance-manager/server/models"
+
 	"github.com/fin-man/finance-manager/server/services"
 )
 
-type CollectorHandler struct {
+type ProcessorHandler struct {
 	ProcessorService *services.ProcessorService
 }
 
-func NewCollectorHandler() *CollectorHandler {
+func NewProcessorHandler() *ProcessorHandler {
 	processorService := services.NewProcessorService()
 
-	return &CollectorHandler{
+	return &ProcessorHandler{
 		ProcessorService: processorService,
 	}
 }
 
-func (c *CollectorHandler) RegisterNewCollector(w http.ResponseWriter, r *http.Request) {
-	newCollector := make(map[string]string)
+func (c *ProcessorHandler) RegisterNewProcessor(w http.ResponseWriter, r *http.Request) {
+	var processor models.ProcessorModel
 
-	err := json.NewDecoder(r.Body).Decode(&newCollector)
+	err := json.NewDecoder(r.Body).Decode(&processor)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	err = c.ProcessorService.CreateNewCollector(newCollector["bank"], newCollector["route"])
+	err = c.ProcessorService.CreateProcessor(&processor)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -39,54 +41,54 @@ func (c *CollectorHandler) RegisterNewCollector(w http.ResponseWriter, r *http.R
 	fmt.Fprintf(w, "registered new collector")
 }
 
-func (c *CollectorHandler) GetAllRegisteredCollectors(w http.ResponseWriter, r *http.Request) {
+func (c *ProcessorHandler) GetAllRegisteredProcessors(w http.ResponseWriter, r *http.Request) {
 
-	services, err := c.CollectorService.GetAllCollectors()
-
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	fmt.Fprintf(w, "%v", services)
-
-}
-
-func (c *CollectorHandler) GetRegisteredCollector(w http.ResponseWriter, r *http.Request) {
-
-	collector, ok := r.URL.Query()["collector"]
-
-	if !ok || len(collector[0]) < 1 {
-		http.Error(w, "Invalid URL param 'collector' is missing", http.StatusBadRequest)
-		return
-	}
-
-	hostname, err := c.CollectorService.GetNewCollector(collector[0])
+	processors, err := c.ProcessorService.GetAllProcessors()
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	fmt.Fprintf(w, "%v", hostname)
+	fmt.Fprintf(w, "%v", processors)
 
 }
 
-func (c *CollectorHandler) Upload(w http.ResponseWriter, r *http.Request) {
-	collector, ok := r.URL.Query()["collector"]
+// func (c *ProcessorHandler) GetRegisteredCollector(w http.ResponseWriter, r *http.Request) {
 
-	if !ok || len(collector[0]) < 1 {
-		http.Error(w, "Invalid URL param 'collector' is missing", http.StatusBadRequest)
-		return
-	}
+// 	collector, ok := r.URL.Query()["collector"]
 
-	hostname, err := c.CollectorService.GetNewCollector(collector[0])
+// 	if !ok || len(collector[0]) < 1 {
+// 		http.Error(w, "Invalid URL param 'collector' is missing", http.StatusBadRequest)
+// 		return
+// 	}
 
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+// 	hostname, err := c.CollectorService.GetNewCollector(collector[0])
 
-	builtURL := fmt.Sprintf("%s/upload", hostname)
+// 	if err != nil {
+// 		http.Error(w, err.Error(), http.StatusInternalServerError)
+// 		return
+// 	}
 
-	http.Redirect(w, r, builtURL, http.StatusSeeOther)
-}
+// 	fmt.Fprintf(w, "%v", hostname)
+
+// }
+
+// func (c *CollectorHandler) Upload(w http.ResponseWriter, r *http.Request) {
+// 	collector, ok := r.URL.Query()["collector"]
+
+// 	if !ok || len(collector[0]) < 1 {
+// 		http.Error(w, "Invalid URL param 'collector' is missing", http.StatusBadRequest)
+// 		return
+// 	}
+
+// 	hostname, err := c.CollectorService.GetNewCollector(collector[0])
+
+// 	if err != nil {
+// 		http.Error(w, err.Error(), http.StatusInternalServerError)
+// 		return
+// 	}
+
+// 	builtURL := fmt.Sprintf("%s/upload", hostname)
+
+// 	http.Redirect(w, r, builtURL, http.StatusSeeOther)
+// }
