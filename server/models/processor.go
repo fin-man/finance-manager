@@ -31,3 +31,7 @@ func (p *ProcessorModel) GetAllProcessors() ([]ProcessorModel, error) {
 
 	return processors, err
 }
+
+func (p *ProcessorModel) DeleteProcessor(processor *ProcessorModel) error {
+	return DB.Delete(&processor).Error
+}

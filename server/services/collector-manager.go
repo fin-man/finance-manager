@@ -8,7 +8,7 @@ import (
 )
 
 type CollectorManager struct {
-	CollectorService *CollectorService
+	ProcessorService *ProcessorService
 }
 
 var (
@@ -16,10 +16,10 @@ var (
 	timeOut = 5 * time.Second
 )
 
-func NewCollectorManager(collectorService *CollectorService) *CollectorManager {
+func NewCollectorManager(processorService *ProcessorService) *CollectorManager {
 
 	return &CollectorManager{
-		CollectorService: collectorService,
+		ProcessorService: processorService,
 	}
 
 }
@@ -27,23 +27,18 @@ func NewCollectorManager(collectorService *CollectorService) *CollectorManager {
 func (n *CollectorManager) RunCollectorHealthChecks() {
 
 	for {
-		collectors, err := n.CollectorService.GetAllCollectors()
+		processors, err := n.ProcessorService.GetAllProcessors()
 
 		if err != nil {
 			log.Println("Unable to fetch registered collectors ", err)
 		}
 
-		for _, c := range collectors {
-			collectorURL, err := n.CollectorService.GetNewCollector(c)
-			if err != nil {
-				log.Printf("Unable to fetch : %s collector \n", c)
-				continue
-			}
+		for _, c := range processors {
 
-			err = n.HealthCheck(c, collectorURL)
+			err = n.HealthCheck(c.ProcessorName, c.URL)
 			if err != nil {
 				//remove from
-				_, err := n.CollectorService.RemoveCollector(c)
+				err := n.ProcessorService.RemoveProcessor(&c)
 				if err != nil {
 					log.Println("Unable to remove ", err)
 				}

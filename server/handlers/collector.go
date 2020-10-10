@@ -9,14 +9,14 @@ import (
 )
 
 type CollectorHandler struct {
-	CollectorService *services.CollectorService
+	ProcessorService *services.ProcessorService
 }
 
 func NewCollectorHandler() *CollectorHandler {
-	collectorService := services.NewCollectorService()
+	processorService := services.NewProcessorService()
 
 	return &CollectorHandler{
-		CollectorService: collectorService,
+		ProcessorService: processorService,
 	}
 }
 
@@ -30,7 +30,7 @@ func (c *CollectorHandler) RegisterNewCollector(w http.ResponseWriter, r *http.R
 		return
 	}
 
-	err = c.CollectorService.CreateNewCollector(newCollector["bank"], newCollector["route"])
+	err = c.ProcessorService.CreateNewCollector(newCollector["bank"], newCollector["route"])
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
