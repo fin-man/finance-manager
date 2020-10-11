@@ -13,6 +13,7 @@ type RedisClient struct {
 }
 
 func NewRedisClient() *RedisClient {
+	log.Println("Initializing redis client")
 	client := redis.NewClient(&redis.Options{
 		Addr:     "localhost:6379",
 		Password: "", // no password set
@@ -26,17 +27,20 @@ func NewRedisClient() *RedisClient {
 			log.Println(err)
 		} else if err != nil {
 			log.Fatal(err)
+		} else {
+			break
 		}
 		time.Sleep(5 * time.Second)
 	}
 
+	log.Println("Done initializing redis client")
 	return &RedisClient{
 		Client: client,
 	}
 }
 
 func (r *RedisClient) Set(key, value string) error {
-	return r.Client.Set(context.Background(), key, value, 30*time.Second).Err()
+	return r.Client.Set(context.Background(), key, value, 0).Err()
 }
 
 func (r *RedisClient) Get(key string) (string, error) {

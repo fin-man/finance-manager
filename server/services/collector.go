@@ -2,29 +2,25 @@ package services
 
 import "github.com/fin-man/finance-manager/server/models"
 
-type CollectorService struct {
-	Redis *models.RedisModel
+type ProcessorService struct {
+	Processor *models.ProcessorModel
 }
 
-func NewCollectorService() *CollectorService {
-	redis := models.NewRedisModel()
-	return &CollectorService{
-		Redis: redis,
+func NewProcessorService() *ProcessorService {
+	processor := models.NewProcessorModel()
+	return &ProcessorService{
+		Processor: processor,
 	}
 }
 
-func (c *CollectorService) CreateNewCollector(key, value string) error {
-	return c.Redis.RedisClient.Set(key, value)
+func (c *ProcessorService) CreateProcessor(processor *models.ProcessorModel) error {
+	return c.Processor.CreateProcessor(processor)
 }
 
-func (c *CollectorService) GetNewCollector(collector string) (string, error) {
-	return c.Redis.RedisClient.Get(collector)
+func (c *ProcessorService) GetAllProcessors() ([]models.ProcessorModel, error) {
+	return c.Processor.GetAllProcessors()
 }
 
-func (c *CollectorService) GetAllCollectors() ([]string, error) {
-	return c.Redis.RedisClient.GetAllKeys()
-}
-
-func (c *CollectorService) RemoveCollector(collector string) (int64, error) {
-	return c.Redis.RedisClient.Remove(collector)
+func (c *ProcessorService) RemoveProcessor(processor *models.ProcessorModel) error {
+	return c.Processor.DeleteProcessor(processor)
 }

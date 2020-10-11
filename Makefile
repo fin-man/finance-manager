@@ -7,3 +7,6 @@ build:
 
 run-server: 
 	./bin/server
+
+db-exec:
+	docker exec -it postgres_finman psql -U postgres -d finances

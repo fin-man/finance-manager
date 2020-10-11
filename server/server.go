@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/fin-man/finance-manager/server/models"
 	"github.com/fin-man/finance-manager/server/services"
 
 	"github.com/fin-man/finance-manager/server/handlers"
@@ -16,24 +17,26 @@ import (
 func main() {
 
 	router := routers.NewRouter()
+	_, err := models.DBInit()
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	transactionHandler := handlers.NewTransactionHandler()
+	log.Println("Initialized DB")
+	//transactionHandler := handlers.NewTransactionHandler()
 	categoriesHandler := handlers.NewCategoriesHandler()
-	collectorHandler := handlers.NewCollectorHandler()
-	collectorService := services.NewCollectorService()
-	collectorManager := services.NewCollectorManager(collectorService)
+	processorHandler := handlers.NewProcessorHandler()
+	processorService := services.NewProcessorService()
+	processorManager := services.NewCollectorManager(processorService)
+	go processorManager.RunCollectorHealthChecks()
 
-	fmt.Println("Start collector manager...")
-	go collectorManager.RunCollectorHealthChecks()
-
-	router.Router.HandleFunc("/transactions", transactionHandler.GetAllTransactions).Methods("GET")
-	router.Router.HandleFunc("/transactions/range", transactionHandler.GetTransactionsInDateRange).Methods("GET")
-	router.Router.HandleFunc("/transactions", transactionHandler.CreateTransaction).Methods("POST")
-	router.Router.HandleFunc("/transactions/graph", transactionHandler.GetAllTransactionsGraph).Methods("GET")
-	router.Router.HandleFunc("/transactions/search", transactionHandler.SearchTransactions).Methods("GET")
-	router.Router.HandleFunc("/collectors", collectorHandler.GetAllRegisteredCollectors).Methods("GET")
-	router.Router.HandleFunc("/collector", collectorHandler.RegisterNewCollector).Methods("POST")
-	router.Router.HandleFunc("/collector", collectorHandler.GetRegisteredCollector).Methods("GET")
+	// router.Router.HandleFunc("/transactions", transactionHandler.GetAllTransactions).Methods("GET")
+	// router.Router.HandleFunc("/transactions/range", transactionHandler.GetTransactionsInDateRange).Methods("GET")
+	// router.Router.HandleFunc("/transactions", transactionHandler.CreateTransaction).Methods("POST")
+	// router.Router.HandleFunc("/transactions/graph", transactionHandler.GetAllTransactionsGraph).Methods("GET")
+	// router.Router.HandleFunc("/transactions/search", transactionHandler.SearchTransactions).Methods("GET")
+	router.Router.HandleFunc("/processors", processorHandler.GetAllRegisteredProcessors).Methods("GET")
+	router.Router.HandleFunc("/processor", processorHandler.RegisterNewProcessor).Methods("POST")
 	router.Router.HandleFunc("/categories", categoriesHandler.GetAllCategories).Methods("GET")
 
 	csvHandler := handlers.NewCSVHandler()
