@@ -18,6 +18,7 @@ type TransactionModel struct {
 	AccountID       string              `csv:"account_id"  json:"account_id"`
 	Category        categories.Category `csv:"category"  json:"category"`
 	AccountType     string              `csv:"account_type" json:"account_type`
+	Hash            string              `csv:"-" json:"hash"`
 }
 
 func NewTransactionsModel() *TransactionModel {

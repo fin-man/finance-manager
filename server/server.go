@@ -23,16 +23,18 @@ func main() {
 	}
 
 	log.Println("Initialized DB")
-	//transactionHandler := handlers.NewTransactionHandler()
 	categoriesHandler := handlers.NewCategoriesHandler()
 	processorHandler := handlers.NewProcessorHandler()
 	processorService := services.NewProcessorService()
 	processorManager := services.NewCollectorManager(processorService)
+	transactionPostgresService := services.NewTransactionPostgresService()
+	transactionPostgresHandler := handlers.NewTransactionPostgresHandler(transactionPostgresService)
+
 	go processorManager.RunCollectorHealthChecks()
 
 	// router.Router.HandleFunc("/transactions", transactionHandler.GetAllTransactions).Methods("GET")
 	// router.Router.HandleFunc("/transactions/range", transactionHandler.GetTransactionsInDateRange).Methods("GET")
-	router.Router.HandleFunc("/transactions", transactionHandler.CreateTransaction).Methods("POST")
+	router.Router.HandleFunc("/transactions", transactionPostgresHandler.CreateTransaction).Methods("POST")
 	// router.Router.HandleFunc("/transactions/graph", transactionHandler.GetAllTransactionsGraph).Methods("GET")
 	// router.Router.HandleFunc("/transactions/search", transactionHandler.SearchTransactions).Methods("GET")
 	router.Router.HandleFunc("/processors", processorHandler.GetAllRegisteredProcessors).Methods("GET")
