@@ -32,7 +32,7 @@ func main() {
 
 	// router.Router.HandleFunc("/transactions", transactionHandler.GetAllTransactions).Methods("GET")
 	// router.Router.HandleFunc("/transactions/range", transactionHandler.GetTransactionsInDateRange).Methods("GET")
-	// router.Router.HandleFunc("/transactions", transactionHandler.CreateTransaction).Methods("POST")
+	router.Router.HandleFunc("/transactions", transactionHandler.CreateTransaction).Methods("POST")
 	// router.Router.HandleFunc("/transactions/graph", transactionHandler.GetAllTransactionsGraph).Methods("GET")
 	// router.Router.HandleFunc("/transactions/search", transactionHandler.SearchTransactions).Methods("GET")
 	router.Router.HandleFunc("/processors", processorHandler.GetAllRegisteredProcessors).Methods("GET")
