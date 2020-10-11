@@ -35,8 +35,8 @@ func main() {
 	// router.Router.HandleFunc("/transactions", transactionHandler.CreateTransaction).Methods("POST")
 	// router.Router.HandleFunc("/transactions/graph", transactionHandler.GetAllTransactionsGraph).Methods("GET")
 	// router.Router.HandleFunc("/transactions/search", transactionHandler.SearchTransactions).Methods("GET")
-	router.Router.HandleFunc("/collectors", processorHandler.GetAllRegisteredProcessors).Methods("GET")
-	router.Router.HandleFunc("/collector", processorHandler.RegisterNewProcessor).Methods("POST")
+	router.Router.HandleFunc("/processors", processorHandler.GetAllRegisteredProcessors).Methods("GET")
+	router.Router.HandleFunc("/processor", processorHandler.RegisterNewProcessor).Methods("POST")
 	router.Router.HandleFunc("/categories", categoriesHandler.GetAllCategories).Methods("GET")
 
 	csvHandler := handlers.NewCSVHandler()

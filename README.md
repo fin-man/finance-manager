@@ -57,6 +57,6 @@
 ### Registering a processor
 
 ```
-curl --header "Content-Type: application/json" --request POST --data '{"url":"http://localhost:9091","processor_name":"xyz"}' http://localhost:8080/collector
+curl --header "Content-Type: application/json" --request POST --data '{"url":"http://localhost:9091","processor_name":"xyz"}' http://localhost:8080/processor
 
 ```
