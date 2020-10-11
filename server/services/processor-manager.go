@@ -37,16 +37,9 @@ func (n *CollectorManager) RunCollectorHealthChecks() {
 
 			err = n.HealthCheck(c.ProcessorName, c.URL)
 			if err != nil {
-				//remove from
-				err := n.ProcessorService.RemoveProcessor(&c)
-				if err != nil {
-					log.Println("Unable to remove ", err)
-				}
-
-				log.Println("Removed : ", c)
+				log.Println(err)
 			}
 		}
-		log.Println("Waiting ...")
 		time.Sleep(2 * time.Second)
 	}
 
@@ -54,19 +47,12 @@ func (n *CollectorManager) RunCollectorHealthChecks() {
 
 func (n *CollectorManager) HealthCheck(collector, collectorURL string) error {
 
-	for i := 0; i < retries; i++ {
-		resp, err := http.Get(collectorURL + "/health")
+	resp, err := http.Get(collectorURL + "/health")
 
-		if err != nil {
-			log.Printf("%s is unhealthy : %v", collectorURL, err)
-		} else if resp.StatusCode == 200 {
-			return nil
-		}
-
-		time.Sleep(timeOut)
+	if err != nil || resp.StatusCode != 200 {
+		return fmt.Errorf("%s is unhealthy : %v", collectorURL, err)
 	}
 
-	log.Printf("%s healthcheck failed after %d retries\n", collectorURL, retries)
+	return nil
 
-	return fmt.Errorf("%s healthcheck failed after %d retries", retries)
 }
