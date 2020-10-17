@@ -1,15 +1,6 @@
 package services
 
-import (
-	"log"
-	"sort"
-
-	"github.com/fin-man/finance-manager/utils"
-
-	"github.com/fin-man/finance-manager/categories"
-	"github.com/fin-man/finance-manager/server/models"
-)
-
+/*
 type TransactionService struct {
 	TransactionModel *models.ElasticSearchModel
 }
@@ -143,3 +134,4 @@ func (t *TransactionService) GetAllTransactionsGraph(from string, to string) *Gr
 func (t *TransactionService) GetTransactionsInDateRange(from string, to string) (*models.TransactionResponse, error) {
 	return t.TransactionModel.GetTransactionsInDateRange(from, to)
 }
+*/
