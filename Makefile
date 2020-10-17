@@ -1,6 +1,6 @@
 
 
-build-all: build
+build-all: build run-server
 
 build:
 	go build -o ./bin/server ./server
