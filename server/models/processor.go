@@ -6,8 +6,8 @@ import (
 
 type ProcessorModel struct {
 	gorm.Model
-	URL           string `json:"url"`
-	ProcessorName string `json:"processor_name"`
+	URL           string `json:"url" gorm:"unique"`
+	ProcessorName string `json:"processor_name" gorm:"unique"`
 }
 
 func (p ProcessorModel) TableName() string {
@@ -33,5 +33,5 @@ func (p *ProcessorModel) GetAllProcessors() ([]ProcessorModel, error) {
 }
 
 func (p *ProcessorModel) DeleteProcessor(processor *ProcessorModel) error {
-	return DB.Delete(&processor).Error
+	return DB.Unscoped().Delete(&processor).Error
 }
