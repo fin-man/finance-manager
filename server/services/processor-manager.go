@@ -38,6 +38,11 @@ func (n *CollectorManager) RunCollectorHealthChecks() {
 			err = n.HealthCheck(c.ProcessorName, c.URL)
 			if err != nil {
 				log.Println(err)
+				log.Println("Removing processor : ", c.ProcessorName)
+				err = n.ProcessorService.RemoveProcessor(&c)
+				if err != nil {
+					log.Println(err)
+				}
 			}
 		}
 		time.Sleep(2 * time.Second)

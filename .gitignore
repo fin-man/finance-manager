@@ -1,5 +1,5 @@
 *.csv 
-bin/server
+bin/*
 
 # UI 
 # dependencies
