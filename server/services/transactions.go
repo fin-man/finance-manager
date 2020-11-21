@@ -29,7 +29,7 @@ func (t *TransactionPostgresService) CreateTransaction(transaction *models.Trans
 func (t *TransactionPostgresService) generateID(bank categories.Bank, amount float64, category categories.Category, date, description string) string {
 	return utils.EncodeToBase64(fmt.Sprintf("%s-%f-%s-%s-%s", bank, amount, category, date, description))
 }
-func (t *TransactionPostgresService) SearchTransactions(query map[string]interface{}) ([]models.TransactionModel, error) {
+func (t *TransactionPostgresService) SearchTransactions(query map[string][]string) ([]models.TransactionModel, error) {
 
 	return t.TransactionModel.SearchTransactions(query)
 }

@@ -45,10 +45,18 @@ func (e *TransactionModel) GetAllTransactions() ([]TransactionModel, error) {
 - /transactions?date="datetime"
 - /transactions?start_time="start_datetime"&end_time="end_datetime"
 */
-func (e *TransactionModel) SearchTransactions(query map[string]interface{}) ([]TransactionModel, error) {
+func (e *TransactionModel) SearchTransactions(query map[string][]string) ([]TransactionModel, error) {
 	// map[string]interface{}{"name": []string{"jinzhu", "jinzhu 2"}}
 	var transactions []TransactionModel
-	if err := DB.Find(&transactions, query).Error; err != nil {
+	// SELECT * FROM users WHERE name IN ('jinzhu','jinzhu 2');
+
+	// fmt.Println("Bank ", query["bank"])
+	// fmt.Println("Category ", query["category"])
+	// if err := DB.Where("bank IN ?", []string{"bankOne", "bankTwo"}).Find(&transactions).Error; err != nil {
+	// 	return transactions, err
+	// }
+
+	if err := DB.Raw("SELECT * FROM transactions WHERE bank IN ('bankOne','bankTwo')").Find(&transactions).Error; err != nil {
 		return transactions, err
 	}
 

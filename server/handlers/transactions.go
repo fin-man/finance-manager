@@ -24,7 +24,7 @@ func (t *TransactionPostgresHandler) GetAllTransactions(w http.ResponseWriter, r
 	//json handle
 	banks, okBanks := r.URL.Query()["banks"]
 	categories, okCat := r.URL.Query()["categories"]
-	query := make(map[string]interface{})
+	query := make(map[string][]string)
 
 	if okBanks {
 		query["bank"] = banks
