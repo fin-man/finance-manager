@@ -1,145 +1,84 @@
 package handlers
 
-import "net/http"
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
 
-// type TransactionHandler struct {
-// 	TransactionService *services.TransactionService
-// }
+	"github.com/fin-man/finance-manager/server/models"
 
-// var (
-// 	CreatedResponse string = `{ "transaction" : %s , "message" : %s }`
-// )
+	"github.com/fin-man/finance-manager/server/services"
+)
 
-// func NewTransactionHandler() *TransactionHandler {
+type TransactionPostgresHandler struct {
+	TransactionPostgresService *services.TransactionPostgresService
+}
 
-// 	transactionService := services.NewTransactionService()
-// 	return &TransactionHandler{
-// 		TransactionService: transactionService,
-// 	}
-// }
+func NewTransactionPostgresHandler(transactionPostgresService *services.TransactionPostgresService) *TransactionPostgresHandler {
+	return &TransactionPostgresHandler{
+		TransactionPostgresService: transactionPostgresService,
+	}
+}
 
-// func (t *TransactionHandler) CreateTransaction(w http.ResponseWriter, r *http.Request) {
-// 	var transaction categories.NormalizedTransaction
-// 	enableCors(&w)
+func (t *TransactionPostgresHandler) GetAllTransactions(w http.ResponseWriter, r *http.Request) {
+	//json handle
+	banks, okBanks := r.URL.Query()["banks"]
+	categories, okCat := r.URL.Query()["categories"]
+	query := make(map[string][]string)
 
-// 	err := json.NewDecoder(r.Body).Decode(&transaction)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusBadRequest)
-// 		return
-// 	}
+	if okBanks {
+		query["bank"] = banks
+	}
 
-// 	transaction.MakeAmountPositive() //some banks have a mount as negative
-// 	transaction.ToLowerCase()
+	if okCat {
+		query["category"] = categories
+	}
 
-// 	data, err := json.Marshal(transaction)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusBadRequest)
-// 		return
-// 	}
+	transactions, err := t.TransactionPostgresService.SearchTransactions(query)
 
-// 	generatedID := t.generateID(transaction.Bank, transaction.Amount, transaction.Category, transaction.TransactionDate, transaction.Description)
-// 	err = t.TransactionService.CreateTransaction(data, generatedID)
+	w.Header().Set("Content-Type", "application/json")
 
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusBadRequest)
-// 		return
-// 	}
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
-// 	responseMessage := fmt.Sprintf(CreatedResponse, string(data), "created_successfully")
-// 	fmt.Fprintf(w, responseMessage)
-// }
+	resp := make(map[string]interface{})
 
-// func (t *TransactionHandler) SearchTransactions(w http.ResponseWriter, r *http.Request) {
-// 	enableCors(&w)
-// 	search := r.URL.Query().Get("search")
-// 	from := r.URL.Query().Get("from")
-// 	to := r.URL.Query().Get("to")
+	resp["transactions"] = transactions
+	resp["size"] = len(transactions)
 
-// 	tr, err := t.TransactionService.SearchTransaction(search, from, to)
+	jsonResp, err := json.Marshal(resp)
 
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusBadRequest)
-// 		return
-// 	}
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
-// 	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusOK)
+	w.Write(jsonResp)
 
-// 	if err := json.NewEncoder(w).Encode(tr); err != nil {
-// 		if err != nil {
-// 			http.Error(w, err.Error(), http.StatusBadRequest)
-// 			return
-// 		}
+}
 
-// 	}
-// }
+func (t *TransactionPostgresHandler) CreateTransaction(w http.ResponseWriter, r *http.Request) {
+	var transaction models.TransactionModel
+	err := json.NewDecoder(r.Body).Decode(&transaction)
 
-// func (t *TransactionHandler) GetAllTransactions(w http.ResponseWriter, r *http.Request) {
-// 	tr, err := t.TransactionService.GetAllTransactions()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusBadRequest)
-// 		return
-// 	}
-// 	enableCors(&w)
+	_, err = t.TransactionPostgresService.CreateTransaction(&transaction)
 
-// 	w.WriteHeader(http.StatusOK)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-// 	if err := json.NewEncoder(w).Encode(tr); err != nil {
-// 		if err != nil {
-// 			http.Error(w, err.Error(), http.StatusBadRequest)
-// 			return
-// 		}
-
-// 	}
-// }
-
-// func (t *TransactionHandler) GetAllTransactionsGraph(w http.ResponseWriter, r *http.Request) {
-
-// 	from := r.URL.Query().Get("from")
-// 	to := r.URL.Query().Get("to")
-
-// 	testData := t.TransactionService.GetAllTransactionsGraph(from, to)
-// 	enableCors(&w)
-
-// 	w.WriteHeader(http.StatusOK)
-
-// 	if err := json.NewEncoder(w).Encode(testData); err != nil {
-// 		if err != nil {
-// 			http.Error(w, err.Error(), http.StatusBadRequest)
-// 			return
-// 		}
-
-// 	}
-// }
-
-// func (t *TransactionHandler) GetTransactionsInDateRange(w http.ResponseWriter, r *http.Request) {
-// 	enableCors(&w)
-
-// 	from := r.URL.Query().Get("from")
-// 	to := r.URL.Query().Get("to")
-
-// 	fmt.Printf("FROM : %s , TO : %s \n", from, to)
-// 	tr, err := t.TransactionService.GetTransactionsInDateRange(from, to)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusBadRequest)
-// 		return
-// 	}
-
-// 	w.Header().Set("Content-Type", "application/json")
-// 	w.WriteHeader(http.StatusOK)
-
-// 	if err := json.NewEncoder(w).Encode(tr); err != nil {
-// 		if err != nil {
-// 			http.Error(w, err.Error(), http.StatusBadRequest)
-// 			return
-// 		}
-// 	}
-// }
+	fmt.Fprintf(w, "created transaction")
+}
 
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
-
-// func (t *TransactionHandler) generateID(bank categories.Bank, amount float64, category categories.Category, date, description string) string {
-// 	return utils.EncodeToBase64(fmt.Sprintf("%s-%f-%s-%s-%s", bank, amount, category, date, description))
-// }

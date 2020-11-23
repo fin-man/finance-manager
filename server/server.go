@@ -32,11 +32,8 @@ func main() {
 
 	go processorManager.RunCollectorHealthChecks()
 
-	// router.Router.HandleFunc("/transactions", transactionHandler.GetAllTransactions).Methods("GET")
-	// router.Router.HandleFunc("/transactions/range", transactionHandler.GetTransactionsInDateRange).Methods("GET")
+	router.Router.HandleFunc("/transactions", transactionPostgresHandler.GetAllTransactions).Methods("GET")
 	router.Router.HandleFunc("/transactions", transactionPostgresHandler.CreateTransaction).Methods("POST")
-	// router.Router.HandleFunc("/transactions/graph", transactionHandler.GetAllTransactionsGraph).Methods("GET")
-	// router.Router.HandleFunc("/transactions/search", transactionHandler.SearchTransactions).Methods("GET")
 	router.Router.HandleFunc("/processors", processorHandler.GetAllRegisteredProcessors).Methods("GET")
 	router.Router.HandleFunc("/processor", processorHandler.RegisterNewProcessor).Methods("POST")
 	router.Router.HandleFunc("/categories", categoriesHandler.GetAllCategories).Methods("GET")

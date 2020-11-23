@@ -38,8 +38,31 @@ func (e *TransactionModel) GetAllTransactions() ([]TransactionModel, error) {
 	return transactions, err
 }
 
-func (e *TransactionModel) SearchTransaction(search, from, to string) {
-	// to do
+/*
+- /transactions
+- /transactions?bank="bank_name"
+- /transactions?category="category_name"
+- /transactions?date="datetime"
+- /transactions?start_time="start_datetime"&end_time="end_datetime"
+-
+*/
+func (e *TransactionModel) SearchTransactions(query map[string][]string) ([]TransactionModel, error) {
+	// map[string]interface{}{"name": []string{"jinzhu", "jinzhu 2"}}
+	var transactions []TransactionModel
+	// SELECT * FROM users WHERE name IN ('jinzhu','jinzhu 2');
+
+	// fmt.Println("Bank ", query["bank"])
+	// fmt.Println("Category ", query["category"])
+	// if err := DB.Where("bank IN ?", []string{"bankOne", "bankTwo"}).Find(&transactions).Error; err != nil {
+	// 	return transactions, err
+	// }
+
+	if err := DB.Find(&transactions).Error; err != nil {
+		return transactions, err
+	}
+
+	return transactions, nil
+
 }
 
 func (e *TransactionModel) GetTransactionsInDateRange(search, from, to string) {
@@ -63,3 +86,9 @@ func (e *TransactionModel) String() string {
 func (e *TransactionModel) generateTransactionID(transaction *TransactionModel) string {
 	return utils.Sha1Hash(transaction.String())
 }
+
+// func (e *TransactionModel) generateTransactionQuery(query map[string][]string) string {
+// 	for key , value := range query {
+
+// 	}
+// }
