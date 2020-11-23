@@ -31,5 +31,64 @@ func (t *TransactionPostgresService) generateID(bank categories.Bank, amount flo
 }
 func (t *TransactionPostgresService) SearchTransactions(query map[string][]string) ([]models.TransactionModel, error) {
 
-	return t.TransactionModel.SearchTransactions(query)
+	transactions, err := t.TransactionModel.SearchTransactions(query)
+
+	if err != nil {
+		return transactions, err
+	}
+
+	filteredTransactions := t.filter(query, transactions)
+
+	return filteredTransactions, nil
+}
+
+func (t *TransactionPostgresService) filter(query map[string][]string, transactions []models.TransactionModel) []models.TransactionModel {
+	//build out maps
+	banks := make(map[string]bool)
+	categories := make(map[string]bool)
+
+	_, banksOk := query["bank"]
+	if banksOk {
+		t.filterHelper(query["bank"], banks)
+	}
+
+	_, categoriesOk := query["category"]
+	if categoriesOk {
+		t.filterHelper(query["category"], categories)
+	}
+
+	var filteredTransactions []models.TransactionModel
+	for _, transaction := range transactions {
+		validBank := banks[string(transaction.Bank)]
+		validCategory := categories[string(transaction.Category)]
+
+		if len(banks) > 0 && len(categories) == 0 {
+			if validBank {
+				filteredTransactions = append(filteredTransactions, transaction)
+			}
+			continue
+		}
+
+		if len(banks) == 0 && len(categories) > 0 {
+			if validCategory {
+				filteredTransactions = append(filteredTransactions, transaction)
+			}
+			continue
+		}
+
+		if len(banks) > 0 && len(categories) > 0 {
+			if validBank && validCategory {
+				filteredTransactions = append(filteredTransactions, transaction)
+			}
+		}
+
+	}
+
+	return filteredTransactions
+}
+
+func (t *TransactionPostgresService) filterHelper(from []string, to map[string]bool) {
+	for _, v := range from {
+		to[v] = true
+	}
 }

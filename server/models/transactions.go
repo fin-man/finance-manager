@@ -44,6 +44,7 @@ func (e *TransactionModel) GetAllTransactions() ([]TransactionModel, error) {
 - /transactions?category="category_name"
 - /transactions?date="datetime"
 - /transactions?start_time="start_datetime"&end_time="end_datetime"
+-
 */
 func (e *TransactionModel) SearchTransactions(query map[string][]string) ([]TransactionModel, error) {
 	// map[string]interface{}{"name": []string{"jinzhu", "jinzhu 2"}}
@@ -56,7 +57,7 @@ func (e *TransactionModel) SearchTransactions(query map[string][]string) ([]Tran
 	// 	return transactions, err
 	// }
 
-	if err := DB.Raw("SELECT * FROM transactions WHERE bank IN ('bankOne','bankTwo')").Find(&transactions).Error; err != nil {
+	if err := DB.Find(&transactions).Error; err != nil {
 		return transactions, err
 	}
 

@@ -43,7 +43,12 @@ func (t *TransactionPostgresHandler) GetAllTransactions(w http.ResponseWriter, r
 		return
 	}
 
-	jsonResp, err := json.Marshal(transactions)
+	resp := make(map[string]interface{})
+
+	resp["transactions"] = transactions
+	resp["size"] = len(transactions)
+
+	jsonResp, err := json.Marshal(resp)
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
