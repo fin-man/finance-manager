@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/fin-man/finance-manager/categories"
 	"github.com/fin-man/finance-manager/server/utils"
@@ -11,7 +12,7 @@ import (
 type TransactionModel struct {
 	gorm.Model
 	TransactionID   string              `json:"transactions_id" gorm:"unique"`
-	TransactionDate string              `csv:"transaction_date" json:"transaction_date"`
+	TransactionDate time.Time           `csv:"transaction_date" json:"transaction_date"`
 	Amount          float64             `csv:"amount"  json:"amount"`
 	Description     string              `csv:"description"  json:"description"`
 	Bank            categories.Bank     `csv:"bank"  json:"bank"`
