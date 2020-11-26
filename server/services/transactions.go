@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/fin-man/finance-manager/categories"
 	"github.com/fin-man/finance-manager/server/models"
@@ -26,8 +27,8 @@ func (t *TransactionPostgresService) CreateTransaction(transaction *models.Trans
 	return t.TransactionModel.CreateTransaction(transaction)
 }
 
-func (t *TransactionPostgresService) generateID(bank categories.Bank, amount float64, category categories.Category, date, description string) string {
-	return utils.EncodeToBase64(fmt.Sprintf("%s-%f-%s-%s-%s", bank, amount, category, date, description))
+func (t *TransactionPostgresService) generateID(bank categories.Bank, amount float64, category categories.Category, date time.Time, description string) string {
+	return utils.EncodeToBase64(fmt.Sprintf("%s-%f-%s-%s-%s", bank, amount, category, date.Format("2006-01-02"), description))
 }
 func (t *TransactionPostgresService) SearchTransactions(query map[string][]string) ([]models.TransactionModel, error) {
 
