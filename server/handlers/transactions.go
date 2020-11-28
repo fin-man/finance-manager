@@ -46,8 +46,18 @@ func (t *TransactionPostgresHandler) GetAllTransactions(w http.ResponseWriter, r
 
 	//time format validations
 	//if all goes well
+	startDateTimeTime, err := time.Parse("2006-01-02", startDate[0])
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	endDateTimeTime, err := time.Parse("2006-01-02", endDate[0])
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 
-	transactions, err := t.TransactionPostgresService.SearchTransactions(query)
+	transactions, err := t.TransactionPostgresService.SearchTransactions(query, startDateTimeTime, endDateTimeTime)
 
 	w.Header().Set("Content-Type", "application/json")
 

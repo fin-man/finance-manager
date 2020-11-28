@@ -47,7 +47,7 @@ func (e *TransactionModel) GetAllTransactions() ([]TransactionModel, error) {
 - /transactions?start_time="start_datetime"&end_time="end_datetime"
 -
 */
-func (e *TransactionModel) SearchTransactions(query map[string][]string) ([]TransactionModel, error) {
+func (e *TransactionModel) SearchTransactions(query map[string][]string, startTime time.Time, endTime time.Time) ([]TransactionModel, error) {
 	// map[string]interface{}{"name": []string{"jinzhu", "jinzhu 2"}}
 	var transactions []TransactionModel
 	// SELECT * FROM users WHERE name IN ('jinzhu','jinzhu 2');
@@ -58,7 +58,7 @@ func (e *TransactionModel) SearchTransactions(query map[string][]string) ([]Tran
 	// 	return transactions, err
 	// }
 
-	if err := DB.Find(&transactions).Error; err != nil {
+	if err := DB.Where("transaction_date < ? AND transaction_date > ?", startTime, endTime).Find(&transactions).Error; err != nil {
 		return transactions, err
 	}
 
