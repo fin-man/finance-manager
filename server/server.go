@@ -29,6 +29,7 @@ func main() {
 	processorManager := services.NewCollectorManager(processorService)
 	transactionPostgresService := services.NewTransactionPostgresService()
 	transactionPostgresHandler := handlers.NewTransactionPostgresHandler(transactionPostgresService)
+	proxyHandler := handlers.NewProxyHandler()
 
 	go processorManager.RunCollectorHealthChecks()
 
@@ -37,7 +38,7 @@ func main() {
 	router.Router.HandleFunc("/processors", processorHandler.GetAllRegisteredProcessors).Methods("GET")
 	router.Router.HandleFunc("/processor", processorHandler.RegisterNewProcessor).Methods("POST")
 	router.Router.HandleFunc("/categories", categoriesHandler.GetAllCategories).Methods("GET")
-
+	router.Router.HandleFunc("/proxy/upload", proxyHandler.UploadProxyHandler).Methods("POST")
 	csvHandler := handlers.NewCSVHandler()
 	router.Router.HandleFunc("/csv/fields", csvHandler.GetAllFields)
 	port := os.Getenv("SERVER_PORT")
