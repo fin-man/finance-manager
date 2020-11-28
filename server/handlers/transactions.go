@@ -27,6 +27,8 @@ func (t *TransactionPostgresHandler) GetAllTransactions(w http.ResponseWriter, r
 	//json handle
 	banks, okBanks := r.URL.Query()["banks"]
 	categories, okCat := r.URL.Query()["categories"]
+	startDate, okStartDate := r.URL.Query()["startdate"]
+	endDate, okEndDate := r.URL.Query()["enddate"]
 	query := make(map[string][]string)
 
 	if okBanks {
@@ -36,6 +38,14 @@ func (t *TransactionPostgresHandler) GetAllTransactions(w http.ResponseWriter, r
 	if okCat {
 		query["category"] = categories
 	}
+
+	if !okStartDate || !okEndDate || len(startDate) != 1 || len(endDate) != 1 {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	//time format validations
+	//if all goes well
 
 	transactions, err := t.TransactionPostgresService.SearchTransactions(query)
 
