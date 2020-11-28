@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 )
@@ -23,6 +24,7 @@ func (p *ProxyHandler) UploadProxyHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	log.Printf("redirecting %s upload requet to %s\n", proxyTarget[0], proxyBank[0])
-	http.Redirect(w, r, proxyTarget[0], http.StatusTemporaryRedirect)
+	buildTarget := fmt.Sprintf("%s/upload", proxyTarget[0])
+	log.Printf("redirecting %s upload request to %s\n", buildTarget, proxyBank[0])
+	http.Redirect(w, r, buildTarget, http.StatusTemporaryRedirect)
 }
