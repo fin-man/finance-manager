@@ -12,7 +12,7 @@ import (
 type TransactionModel struct {
 	gorm.Model
 	TransactionID   string              `json:"transactions_id" gorm:"unique"`
-	TransactionDate time.Time           `csv:"transaction_date" json:"transaction_date"`
+	TransactionDate int64               `csv:"transaction_date" json:"transaction_date"`
 	Amount          float64             `csv:"amount"  json:"amount"`
 	Description     string              `csv:"description"  json:"description"`
 	Bank            categories.Bank     `csv:"bank"  json:"bank"`
@@ -47,7 +47,7 @@ func (e *TransactionModel) GetAllTransactions() ([]TransactionModel, error) {
 - /transactions?start_time="start_datetime"&end_time="end_datetime"
 -
 */
-func (e *TransactionModel) SearchTransactions(query map[string][]string) ([]TransactionModel, error) {
+func (e *TransactionModel) SearchTransactions(query map[string][]string, startTime time.Time, endTime time.Time) ([]TransactionModel, error) {
 	// map[string]interface{}{"name": []string{"jinzhu", "jinzhu 2"}}
 	var transactions []TransactionModel
 	// SELECT * FROM users WHERE name IN ('jinzhu','jinzhu 2');
@@ -58,7 +58,10 @@ func (e *TransactionModel) SearchTransactions(query map[string][]string) ([]Tran
 	// 	return transactions, err
 	// }
 
-	if err := DB.Find(&transactions).Error; err != nil {
+	fmt.Println("Starttime ", startTime)
+	fmt.Println("EndTIme ", endTime)
+
+	if err := DB.Where("transaction_date > ? AND transaction_date < ?", startTime, endTime).Find(&transactions).Error; err != nil {
 		return transactions, err
 	}
 
@@ -82,7 +85,7 @@ func (e *TransactionModel) CreateTransaction(transaction *TransactionModel) (*Tr
 }
 
 func (e *TransactionModel) String() string {
-	return fmt.Sprintf("%s-%f-%s-%s-%s-%s-%s", e.TransactionDate, e.Amount, e.Description, e.Bank, e.AccountID, e.Category, e.AccountType)
+	return fmt.Sprintf("%d-%f-%s-%s-%s-%s-%s", e.TransactionDate, e.Amount, e.Description, e.Bank, e.AccountID, e.Category, e.AccountType)
 }
 func (e *TransactionModel) generateTransactionID(transaction *TransactionModel) string {
 	return utils.Sha1Hash(transaction.String())
