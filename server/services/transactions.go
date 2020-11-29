@@ -32,7 +32,7 @@ func (t *TransactionPostgresService) generateID(bank categories.Bank, amount flo
 }
 func (t *TransactionPostgresService) SearchTransactions(query map[string][]string, startTime time.Time, endTime time.Time) ([]models.TransactionModel, error) {
 
-	transactions, err := t.TransactionModel.SearchTransactions(query, startTime, endTime)
+	transactions, err := t.TransactionModel.SearchTransactions(query, startTime.Unix(), endTime.Unix())
 
 	if err != nil {
 		return transactions, err
