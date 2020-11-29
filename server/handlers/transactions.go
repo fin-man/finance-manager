@@ -8,9 +8,7 @@ import (
 
 	"github.com/fin-man/finance-manager/server/models"
 
-	"github.com/fin-man/finance-manager/categories"
 	"github.com/fin-man/finance-manager/server/services"
-	"github.com/jinzhu/gorm"
 )
 
 type TransactionPostgresHandler struct {
@@ -84,44 +82,31 @@ func (t *TransactionPostgresHandler) GetAllTransactions(w http.ResponseWriter, r
 }
 
 func (t *TransactionPostgresHandler) CreateTransaction(w http.ResponseWriter, r *http.Request) {
-	type bindTransactionModel struct {
-		gorm.Model
-		TransactionID   string              `json:"transactions_id" gorm:"unique"`
-		TransactionDate string              `csv:"transaction_date" json:"transaction_date"`
-		Amount          float64             `csv:"amount"  json:"amount"`
-		Description     string              `csv:"description"  json:"description"`
-		Bank            categories.Bank     `csv:"bank"  json:"bank"`
-		AccountID       string              `csv:"account_id"  json:"account_id"`
-		Category        categories.Category `csv:"category"  json:"category"`
-		AccountType     string              `csv:"account_type" json:"account_type`
-		Hash            string              `csv:"-" json:"hash"`
-	}
 
-	var bindTransaction bindTransactionModel
-	err := json.NewDecoder(r.Body).Decode(&bindTransaction)
-
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	convertedTime, err := time.Parse("2006-01-02", bindTransaction.TransactionDate)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	//reapply to a transaction model
 	var transaction models.TransactionModel
-	transaction.TransactionID = bindTransaction.TransactionID
-	transaction.TransactionDate = convertedTime
-	transaction.Amount = bindTransaction.Amount
-	transaction.Description = bindTransaction.Description
-	transaction.Bank = bindTransaction.Bank
-	transaction.AccountID = bindTransaction.AccountID
-	transaction.Category = bindTransaction.Category
-	transaction.AccountType = bindTransaction.AccountType
-	transaction.Hash = bindTransaction.Hash
+	err := json.NewDecoder(r.Body).Decode(&transaction)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// convertedTime, err := time.Parse("2006-01-02", bindTransaction.TransactionDate)
+	// if err != nil {
+	// 	http.Error(w, err.Error(), http.StatusInternalServerError)
+	// 	return
+	// }
+
+	// //reapply to a transaction model
+	// transaction.TransactionID = bindTransaction.TransactionID
+	// transaction.TransactionDate = convertedTime
+	// transaction.Amount = bindTransaction.Amount
+	// transaction.Description = bindTransaction.Description
+	// transaction.Bank = bindTransaction.Bank
+	// transaction.AccountID = bindTransaction.AccountID
+	// transaction.Category = bindTransaction.Category
+	// transaction.AccountType = bindTransaction.AccountType
+	// transaction.Hash = bindTransaction.Hash
 
 	_, err = t.TransactionPostgresService.CreateTransaction(&transaction)
 

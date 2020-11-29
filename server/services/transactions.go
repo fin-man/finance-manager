@@ -27,8 +27,8 @@ func (t *TransactionPostgresService) CreateTransaction(transaction *models.Trans
 	return t.TransactionModel.CreateTransaction(transaction)
 }
 
-func (t *TransactionPostgresService) generateID(bank categories.Bank, amount float64, category categories.Category, date time.Time, description string) string {
-	return utils.EncodeToBase64(fmt.Sprintf("%s-%f-%s-%s-%s", bank, amount, category, date.Format("2006-01-02"), description))
+func (t *TransactionPostgresService) generateID(bank categories.Bank, amount float64, category categories.Category, date int64, description string) string {
+	return utils.EncodeToBase64(fmt.Sprintf("%s-%f-%s-%d-%s", bank, amount, category, date, description))
 }
 func (t *TransactionPostgresService) SearchTransactions(query map[string][]string, startTime time.Time, endTime time.Time) ([]models.TransactionModel, error) {
 
