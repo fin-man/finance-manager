@@ -61,7 +61,7 @@ func (e *TransactionModel) SearchTransactions(query map[string][]string, startTi
 	fmt.Println("Starttime ", startTime)
 	fmt.Println("EndTIme ", endTime)
 
-	if err := DB.Where("transaction_date > ? AND transaction_date < ?", startTime, endTime).Find(&transactions).LogMode(true).Error; err != nil {
+	if err := DB.Where("transaction_date > ? AND transaction_date < ?", startTime, endTime).Find(&transactions).Error; err != nil {
 		return transactions, err
 	}
 
