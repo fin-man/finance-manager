@@ -3,7 +3,7 @@ package categories
 import "strings"
 
 type NormalizedTransaction struct {
-	TransactionDate string   `csv:"transaction_date" json:"transaction_date"`
+	TransactionDate int64    `csv:"transaction_date" json:"transaction_date"`
 	Amount          float64  `csv:"amount"  json:"amount"`
 	Description     string   `csv:"description"  json:"description"`
 	Bank            Bank     `csv:"bank"  json:"bank"`
