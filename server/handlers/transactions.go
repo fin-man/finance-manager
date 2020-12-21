@@ -29,6 +29,9 @@ func (t *TransactionPostgresHandler) GetAllTransactions(w http.ResponseWriter, r
 	endDate, okEndDate := r.URL.Query()["enddate"]
 	query := make(map[string][]string)
 
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	if okBanks {
 		query["bank"] = banks
 	}
