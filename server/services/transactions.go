@@ -58,6 +58,10 @@ func (t *TransactionPostgresService) filter(query map[string][]string, transacti
 		t.filterHelper(query["category"], categories)
 	}
 
+	if len(banks) == 0 && len(categories) == 0 {
+		return transactions
+	}
+
 	var filteredTransactions []models.TransactionModel
 	for _, transaction := range transactions {
 		validBank := banks[string(transaction.Bank)]
