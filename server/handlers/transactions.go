@@ -27,6 +27,7 @@ func (t *TransactionPostgresHandler) GetAllTransactions(w http.ResponseWriter, r
 	categories, okCat := r.URL.Query()["categories"]
 	startDate, okStartDate := r.URL.Query()["startdate"]
 	endDate, okEndDate := r.URL.Query()["enddate"]
+	categoryFormat, okCategoryFormat := r.URL.Query()["categoryformat"]
 	query := make(map[string][]string)
 
 	w.Header().Set("Content-Type", "application/json")
@@ -65,6 +66,30 @@ func (t *TransactionPostgresHandler) GetAllTransactions(w http.ResponseWriter, r
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
+	}
+
+	if okCategoryFormat {
+		if len(categoryFormat) == 1 && categoryFormat[0] != "" {
+			categoryData := make(map[string][]models.TransactionModel)
+
+			for _, transaction := range transactions {
+
+				categoryData[string(transaction.Category)] = append(categoryData[string(transaction.Category)], transaction)
+			}
+
+			jsonResp, err := json.Marshal(categoryData)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
+
+			w.WriteHeader(http.StatusOK)
+			w.Write(jsonResp)
+			return
+		} else {
+			w.WriteHeader(http.StatusBadRequest)
+		}
+
 	}
 
 	resp := make(map[string]interface{})
