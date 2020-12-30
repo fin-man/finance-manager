@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/fin-man/finance-manager/categories"
@@ -47,15 +48,14 @@ func (t *TransactionPostgresService) filter(query map[string][]string, transacti
 	//build out maps
 	banks := make(map[string]bool)
 	categories := make(map[string]bool)
-
 	_, banksOk := query["bank"]
 	if banksOk {
-		t.filterHelper(query["bank"], banks)
+		t.filterHelper(strings.Split(query["bank"][0], ","), banks)
 	}
 
 	_, categoriesOk := query["category"]
 	if categoriesOk {
-		t.filterHelper(query["category"], categories)
+		t.filterHelper(strings.Split(query["category"][0], ","), categories)
 	}
 
 	if len(banks) == 0 && len(categories) == 0 {
@@ -63,10 +63,11 @@ func (t *TransactionPostgresService) filter(query map[string][]string, transacti
 	}
 
 	var filteredTransactions []models.TransactionModel
+
 	for _, transaction := range transactions {
 		validBank := banks[string(transaction.Bank)]
-		validCategory := categories[string(transaction.Category)]
 
+		validCategory := categories[string(transaction.Category)]
 		if len(banks) > 0 && len(categories) == 0 {
 			if validBank {
 				filteredTransactions = append(filteredTransactions, transaction)
@@ -93,7 +94,7 @@ func (t *TransactionPostgresService) filter(query map[string][]string, transacti
 }
 
 func (t *TransactionPostgresService) filterHelper(from []string, to map[string]bool) {
-	for _, v := range from {
-		to[v] = true
+	for i := range from {
+		to[from[i]] = true
 	}
 }

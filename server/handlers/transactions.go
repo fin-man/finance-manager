@@ -94,8 +94,13 @@ func (t *TransactionPostgresHandler) GetAllTransactions(w http.ResponseWriter, r
 
 	resp := make(map[string]interface{})
 
-	resp["transactions"] = transactions
-	resp["size"] = len(transactions)
+	if len(transactions) == 0 {
+		resp["transactions"] = []models.TransactionModel{}
+		resp["size"] = len(transactions)
+	} else {
+		resp["transactions"] = transactions
+		resp["size"] = len(transactions)
+	}
 
 	jsonResp, err := json.Marshal(resp)
 
